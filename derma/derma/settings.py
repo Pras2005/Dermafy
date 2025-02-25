@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-0ecs9r#9)*uym(%lgg3hws32#l%9j(d6jmx6kaqu)1esxk-$n#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://vast-civil-fawn.ngrok-free.app",
+]
+
 AUTH_USER_MODEL = 'users.CUSTOMUSER'
 
 # Application definition

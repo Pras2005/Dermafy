@@ -26,10 +26,10 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect("login") #Redirect to login page
+    return redirect("home") #Redirect to login page
 
 def user_signup(request):
-    if request.method ="POST":
+    if request.method =="POST":
         username = request.POST['username']
         password =request.POST['password1']
         password2=request.POST['password2']
@@ -38,12 +38,12 @@ def user_signup(request):
 
 
         if password != password2:
-            return render("sign_up.html"{"error":"password do not match"})
+            return render("sign_up.html",{"error":"password do not match"})
 
-        if CUSTOMUSER.objects.filter(email=email).exits():
-            return render("sign_up.html"{"error":"email already exists"})
+        if CUSTOMUSER.objects.filter(email=email).exists():
+            return render("sign_up.html",{"error":"email already exists"})
 
-        user = CustomUser.objects.create_user(
+        user = CUSTOMUSER.objects.create_user(
             username=username,
             email=email,
             phone_no=phone_no,
