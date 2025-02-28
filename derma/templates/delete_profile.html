@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Profile</title>
+</head>
+<body>
+    <h1>Delete Profile</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}. Are you sure you want to delete your account? This action cannot be undone.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" style="color: red;">Yes, Delete My Account</button>
+        </form>
+
+        <a href="{% url 'dash_board' %}">Cancel</a> |
+        <a href="{% url 'home' %}">Home</a> |
+        <a href="{% url 'user_logout' %}">Logout</a>
+    {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'user_login' %}">Login</a> |
+        <a href="{% url 'user_signup' %}">Sign Up</a>
+    {% endif %}
+
+</body>
+</html>

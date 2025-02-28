@@ -3,6 +3,7 @@ from .models import *
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
+from .forms import UserProfileForm
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 
@@ -27,6 +28,7 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect("home") #Redirect to login page
+
 
 def user_signup(request):
     if request.method =="POST":
@@ -54,6 +56,27 @@ def user_signup(request):
         return redirect('submit_quiz') # quiz_view will be the view of quizes after signup
 
     return render(request,"sign_up.html")
+
+def edit_profile(request):
+    user_profile = request.user  
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect("dash_board") 
+    else:
+        form = UserProfileForm(instance=user_profile)
+    return render(request, "profile/edit_profile.html", {"form": form})
+
+def delete_profile(request):
+    user = request.user
+
+    if request.method == "POST":
+        user.delete()
+        messages.success(request, "Your account has been deleted successfully.")
+        return redirect("home")  #home
+    return render(request, "profile/delete_profile.html")
 
 # Changes by RONIN
 @login_required
