@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 
 def home(request):
     return render(request, "index.html")
@@ -81,5 +80,30 @@ def submit_quiz(request):
         return redirect("quiz_report")  # Redirect to a report or homepage
 
     return render(request, "quiz_form.html")
+#
+
+# Dashboard -RONIN
+@login_required
+def dashboard(request):
+    user = request.user  # Now this will never be AnonymousUser
+    reports = Report.objects.filter(user=user).order_by('-date')
+    skin_progress = SkinProgress.objects.filter(user=user).order_by('-date')
+
+    context = {
+        'reports': reports,
+        'skin_progress': skin_progress,
+    }
+    return render(request, 'dashboard.html', context)
+
+
+def reports(request):
+    all_reports = Report.objects.filter(user=request.user).order_by('-date')
+    return render(request, 'reports.html', {'all_reports': all_reports})
+
+def skincare(request):
+    return render(request, 'skincare.html')
+
+def consult(request):
+    return render(request, 'consult.html')
 
 #

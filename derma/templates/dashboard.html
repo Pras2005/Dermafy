@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        .dashboard { width: 90%; margin: auto; padding: 20px; }
+        .profile { position: absolute; top: 10px; right: 10px; text-align: center; }
+        .profile img { width: 50px; height: 50px; border-radius: 50%; }
+        .progress-section, .scan-upload, .recent-report, .sidebar { margin-top: 20px; }
+        .progress-images { display: flex; overflow-x: auto; gap: 10px; }
+        .progress-item img { width: 100px; height: 100px; object-fit: cover; }
+        .sidebar ul { list-style: none; padding: 0; display: none; }
+        #toggle-menu { cursor: pointer; }
+        #chatbot { position: fixed; bottom: 20px; right: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- Profile at the top right -->
+    <div class="profile">
+        <img src="{{ user.profile.image.url }}" alt="Profile">
+        <p>{{ user.username }}</p>
+    </div>
+
+    <!-- Progress Images -->
+    <div class="progress-section">
+        <h2>Skin Progress</h2>
+        <div class="progress-images">
+            {% for img in progress_images %}
+                <div class="progress-item">
+                    <img src="{{ img.image.url }}" alt="Progress">
+                    <p>{{ img.date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Face Scan or Upload -->
+    <div class="scan-upload">
+        <h2>Scan Your Face or Upload Image</h2>
+        <button id="scan-btn">Scan Face</button>
+        <input type="file" id="upload-btn">
+    </div>
+
+    <!-- Most Recent Report -->
+    <div class="recent-report">
+        <h2>Recent Report</h2>
+        {% if latest_report %}
+            <p>{{ latest_report.details }}</p>
+        {% else %}
+            <p>No recent reports available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar Toggle Menu -->
+    <div class="sidebar">
+        <button id="toggle-menu">☰ Menu</button>
+        <ul id="menu">
+            <li><a href="{% url 'reports' %}">Reports</a></li>
+            <li><a href="{% url 'skincare' %}">Skincare</a></li>
+            <li><a href="{% url 'consult' %}">Consult</a></li>
+        </ul>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot">
+        <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+        <script>
+            window.botpressWebChat.init({
+                "composerPlaceholder": "Ask me anything...",
+                "botId": "YOUR_BOT_ID",
+                "host": "https://cdn.botpress.cloud/webchat",
+            });
+        </script>
+    </div>
+
+    <script>
+        document.getElementById("toggle-menu").addEventListener("click", function() {
+            let menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        });
+    </script>
+
+</body>
+</html>
+

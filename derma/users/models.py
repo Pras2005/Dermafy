@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
+from django.conf import settings
 
 
 class CUSTOMUSER(AbstractUser):
@@ -47,3 +48,19 @@ class QuizResponse(models.Model):
         return f"{self.user.username} - Quiz Response {self.id}"
 
 # Upto here
+
+class SkinProgress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="skin_progress")
+    image = models.ImageField(upload_to="progress_images/")
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Progress of {self.user.username} on {self.date}"
+
+class Report(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
+    details = models.TextField()
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Report of {self.user.username} on {self.date}"
