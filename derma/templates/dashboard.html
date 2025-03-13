@@ -1,88 +1,173 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        .dashboard { width: 90%; margin: auto; padding: 20px; }
-        .profile { position: absolute; top: 10px; right: 10px; text-align: center; }
-        .profile img { width: 50px; height: 50px; border-radius: 50%; }
-        .progress-section, .scan-upload, .recent-report, .sidebar { margin-top: 20px; }
-        .progress-images { display: flex; overflow-x: auto; gap: 10px; }
-        .progress-item img { width: 100px; height: 100px; object-fit: cover; }
-        .sidebar ul { list-style: none; padding: 0; display: none; }
-        #toggle-menu { cursor: pointer; }
-        #chatbot { position: fixed; bottom: 20px; right: 20px; }
-    </style>
+    <title>Dermafy Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
-
-    <!-- Profile at the top right -->
-    <div class="profile">
-        <img src="{{ user.profile.image.url }}" alt="Profile">
-        <p>{{ user.username }}</p>
-    </div>
-
-    <!-- Progress Images -->
-    <div class="progress-section">
-        <h2>Skin Progress</h2>
-        <div class="progress-images">
-            {% for img in progress_images %}
-                <div class="progress-item">
-                    <img src="{{ img.image.url }}" alt="Progress">
-                    <p>{{ img.date }}</p>
-                </div>
-            {% endfor %}
+    <div class="top-section"></div>
+<div class="bottom-section"></div>
+    <!-- Header -->
+    <header class="header">
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-    </div>
+        <div class="app-title">Dermfy</div>
+        <div class="user-profile" id="user-profile">
+            <div class="user-icon">JD</div>
+            <div class="user-dropdown" id="user-dropdown">
+                <div class="user-info">
+                    <div class="username">username</div>
+                    <div class="user-email">john.doe@example.com</div>
+                </div>
+                <!-- <div class="dropdown-item">
+                    <i>👤</i> Profile
+                </div> -->
+                <!-- <div class="dropdown-item">
+                    <i>⚙️</i> Settings
+                </div> -->
+                <a href="login2.html" class="dropdown-item">
+                    <i>🔒</i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
 
-    <!-- Face Scan or Upload -->
-    <div class="scan-upload">
-        <h2>Scan Your Face or Upload Image</h2>
-        <button id="scan-btn" onclick="location.href='{% url 'scan' %}'">Scan Face</button>
-        <input type="file" id="upload-btn">
-    </div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <a href="#" class="sidebar-link active">
+            <i>📊</i> Dashboard
+        </a>
+        <a href="#" class="sidebar-link">
+            <i>💆</i> Skincare
+        </a>
+        <a href="#" class="sidebar-link">
+            <i>🔍</i> Let's Detect
+        </a>
+        <a href="reports.html" class="sidebar-link">
+            <i>📝</i> Reports
+        </a>
+        <a href="#" class="sidebar-link">
+            <i>👨‍⚕️</i> Consult
+        </a>
+    </aside>
 
-    <!-- Most Recent Report -->
-    <div class="recent-report">
-        <h2>Recent Report</h2>
-        {% if latest_report %}
-            <p>{{ latest_report.details }}</p>
-        {% else %}
-            <p>No recent reports available.</p>
-        {% endif %}
-    </div>
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p>Welcome back, John! Here's your skin health overview.</p>
+        </div>
 
-    <!-- Sidebar Toggle Menu -->
-    <div class="sidebar">
-        <button id="toggle-menu">☰ Menu</button>
-        <ul id="menu">
-            <li><a href="{% url 'reports' %}">Reports</a></li>
-            <li><a href="{% url 'skincare' %}">Skincare</a></li>
-            <li><a href="{% url 'consult' %}">Consult</a></li>
-        </ul>
-    </div>
+        <!-- Recent Scans Section -->
+        <section class="recent-scans">
+            <h2 class="section-title">
+                Recent Scans
+                <a href="#">View All</a>
+            </h2>
+            <div class="scans-grid">
+                <!-- Scan 1 -->
+                <div class="scan-card">
+                    <div class="scan-image"></div>
+                    <div class="scan-details">
+                        <div class="scan-date">March 5, 2025</div>
+                        <div class="scan-category">Face Scan</div>
+                        <h3 class="scan-title">Morning Check</h3>
+                        <div class="scan-status">
+                            <span class="status-indicator status-safe"></span>
+                            Healthy
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Chatbot -->
-    <div id="chatbot">
-        <script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
-        <script>
-            window.botpressWebChat.init({
-                "composerPlaceholder": "Ask me anything...",
-                "botId": "YOUR_BOT_ID",
-                "host": "https://cdn.botpress.cloud/webchat",
-            });
-        </script>
-    </div>
+                <!-- Scan 2 -->
+                <div class="scan-card">
+                    <div class="scan-image"></div>
+                    <div class="scan-details">
+                        <div class="scan-date">March 2, 2025</div>
+                        <div class="scan-category">Arm Scan</div>
+                        <h3 class="scan-title">Rash Follow-up</h3>
+                        <div class="scan-status">
+                            <span class="status-indicator status-warning"></span>
+                            Monitoring
+                        </div>
+                    </div>
+                </div>
 
-    <script>
-        document.getElementById("toggle-menu").addEventListener("click", function() {
-            let menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
-        });
+                <!-- Scan 3 -->
+                <div class="scan-card">
+                    <div class="scan-image"></div>
+                    <div class="scan-details">
+                        <div class="scan-date">February 27, 2025</div>
+                        <div class="scan-category">Mole Check</div>
+                        <h3 class="scan-title">Back Mole</h3>
+                        <div class="scan-status">
+                            <span class="status-indicator status-safe"></span>
+                            Healthy
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan 4 -->
+                <div class="scan-card">
+                    <div class="scan-image"></div>
+                    <div class="scan-details">
+                        <div class="scan-date">February 24, 2025</div>
+                        <div class="scan-category">Routine Scan</div>
+                        <h3 class="scan-title">Monthly Check</h3>
+                        <div class="scan-status">
+                            <span class="status-indicator status-safe"></span>
+                            Healthy
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest Report Section -->
+        <section class="latest-report">
+            <h2 class="section-title">
+                Latest Report
+                <a href="reports.html">View All Reports</a>
+            </h2>
+            <div class="report-card">
+                <div class="report-header">
+                    <h3>Monthly Skin Health Assessment</h3>
+                    <div class="report-date">March 5, 2025</div>
+                </div>
+                <div class="report-tags">
+                    <span class="report-tag">Comprehensive</span>
+                    <span class="report-tag">Dermatologist Reviewed</span>
+                </div>
+                <div class="report-content">
+                    <p>Your skin is in good overall health. The hydration levels have improved since your last assessment. Continue with your current skincare routine and monitor the small rash on your right arm which is showing improvement.</p>
+                </div>
+                <div class="report-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">92<span style="font-size: 1rem;">%</span></div>
+                        <div class="stat-label">Overall Health</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">87<span style="font-size: 1rem;">%</span></div>
+                        <div class="stat-label">Hydration</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+5<span style="font-size: 1rem;">%</span></div>
+                        <div class="stat-label">Improvement</div>
+                    </div>
+                </div>
+                <a href="#" class="view-button">View Full Report</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{% static 'js/dashboard.js'%}">
+        
     </script>
-
 </body>
 </html>
-

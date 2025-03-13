@@ -11,7 +11,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 
 def home(request):
-    return render(request, "index.html")
+    return render(request, "home.html")
 
 
 
@@ -64,27 +64,32 @@ def user_signup(request):
 @login_required
 def submit_quiz(request):
     if request.method == "POST":
-        QuizResponse.objects.create(
-            user=request.user,
-            primary_skin_concern=request.POST.get("primary_skin_concern"),
-            skin_type=request.POST.get("skin_type"),
-            breakout_frequency=request.POST.get("breakout_frequency"),
-            reaction_to_skincare=request.POST.get("reaction_to_skincare"),
-            redness_inflammation=request.POST.get("redness_inflammation"),
-            sunscreen_usage=request.POST.get("sunscreen_usage"),
-            skin_conditions=request.POST.get("skin_conditions"),
-            after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
-            water_intake=request.POST.get("water_intake"),
-            dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
-            visible_pores=request.POST.get("visible_pores"),
-            exfoliation_frequency=request.POST.get("exfoliation_frequency"),
-            fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
-            dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
-            skincare_routine=request.POST.get("skincare_routine"),
-        )
-        messages.success(request, "Quiz submitted successfully!")
-        return redirect("dashboard")  # Redirect to a report or homepage
+        try:
+            QuizResponse.objects.create(
+                user=request.user,
+                primary_skin_concern=request.POST.get("primary_skin_concern"),
+                skin_type=request.POST.get("skin_type"),
+                breakout_frequency=request.POST.get("breakout_frequency"),
+                reaction_to_skincare=request.POST.get("reaction_to_skincare"),
+                redness_inflammation=request.POST.get("redness_inflammation"),
+                sunscreen_usage=request.POST.get("sunscreen_usage"),
+                skin_conditions=request.POST.get("skin_conditions"),
+                after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
+                water_intake=request.POST.get("water_intake"),
+                dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
+                visible_pores=request.POST.get("visible_pores"),
+                exfoliation_frequency=request.POST.get("exfoliation_frequency"),
+                fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
+                dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
+                skincare_routine=request.POST.get("skincare_routine"),
+            )
+            messages.success(request, "Quiz submitted successfully!")
+            return redirect("dashboard")  # Redirect to a report or homepage
 
+        except Exception as e:
+            print(f"Error saving quiz: {e}")
+            messages.error(request, "Failed to submit the quiz. Please try again.")
+    
     return render(request, "quiz_form.html")
 #
 
