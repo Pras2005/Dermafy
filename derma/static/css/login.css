@@ -1,4 +1,4 @@
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -32,7 +32,7 @@ body {
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
     backdrop-filter: blur 10px;
     background: transparent;
-    /*opacity: 95%;*/
+    
 }
 
 /* OPACITY CAHNGES*/
@@ -78,8 +78,9 @@ body {
 
 .slideshow {
     position: relative;
-    height: 65%;
+    height: 100%;
     overflow: hidden;
+    border-radius: 20px;
 }
 
 .slide {
@@ -97,6 +98,7 @@ body {
 .slide.active {
     opacity: 1;
 }
+
 
 .slide-indicators {
     display: flex;

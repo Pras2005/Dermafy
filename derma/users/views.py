@@ -6,7 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from .utils import *
-
+from .utils import is_valid_password 
+import re
 
 def home(request):
     return render(request, "index.html")
@@ -28,10 +29,9 @@ def user_logout(request):
     logout(request)
     return redirect("home") #Redirect to login page
 
+
 def user_signup(request):
     if request.method == "POST":
-        print(request.POST)  # Debugging: Check if data is correctly received
-
         username = request.POST.get('username', '')
         password = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
@@ -39,23 +39,28 @@ def user_signup(request):
         phone_no = request.POST.get("phone_no", '')
 
         if password != password2:
-            return render(request,"sign_up.html", {"error": "Passwords do not match"})
+            return render(request, "sign_up.html", {"error": "Passwords do not match"})
+
+        # Call the password validation function
+        password_error = is_valid_password(password)
+        if password_error:
+            return render(request, "sign_up.html", {"error": password_error})
 
         if CUSTOMUSER.objects.filter(email=email).exists():
-            return render(request,"sign_up.html", {"error": "Email already exists"})
+            return render(request, "sign_up.html", {"error": "Email already exists"})
 
         try:
             user = CUSTOMUSER.objects.create_user(username=username, email=email, password=password)
-            user.phone_no = phone_no  # If phone_no isn't part of create_user()
+            user.phone_no = phone_no
             user.save()
         except Exception as e:
-            print(f"Error creating user: {e}")  # Debugging
-            return render( "sign_up.html", {"error": "User creation failed. Try again."})
+            return render(request, "sign_up.html", {"error": "User creation failed. Try again."})
 
         login(request, user)
-        return redirect('submit_quiz')  # Ensure this matches `urls.py`
+        return redirect('submit_quiz')
 
     return render(request, "sign_up.html")
+
 
 # Changes by RONIN
 @login_required

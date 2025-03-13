@@ -78,8 +78,9 @@ html {
     position: relative;
     height: 100%;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 0px;
     min-height: 80vh;
+    padding-bottom: 20px;
 }
 
 .slide {

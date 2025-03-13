@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Left Panel -->
         <div class="left-panel">
             <div class="logo">Dermafy</div>
             <a href="{% url 'home' %}" class="back-link">
@@ -18,10 +19,12 @@
                 </svg>
             </a>
             
+            <!-- Slideshow -->
             <div class="slideshow">
-                <div class="slide active" style="background-image: url('/static/images/sam1.jpg')"></div>
-                <div class="slide" style="background-image: url('/static/images/sam2.jpg')"></div>
-                <div class="slide" style="background-image: url('/static/images/sam3.jpg')"></div>
+                <div class="slide" style="background-image: url(&#39;/static/images/slideimg1.jpg&#39;); height: 600px; border-radius: 20px;"></div>
+                <div class="slide" style="background-image: url(&#39;/static/images/slideimg2.jpg&#39;); height: 600px; border-radius: 20px;"></div>
+                <div class="slide active" style="background-image: url(&#39;/static/images/slideimg3.jpg&#39;); height: 600px; border-radius: 20px;"></div>
+                
                 
                 <div class="slide-caption">
                     <h2>Capturing Moments,</h2>
@@ -35,10 +38,14 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- Right Panel -->
         <div class="right-panel">
             <h1>Welcome back</h1>
-            <p class="signup-link">Don't have an account? <a href="{% url 'user_signup' %}">Sign up</a></p>
+            <p class="signup-link">
+                Don't have an account? 
+                <a href="{% url 'user_signup' %}">Sign up</a>
+            </p>
 
             {% if messages %}
                 {% for message in messages %}
@@ -77,6 +84,7 @@
                 <span>Or login with</span>
             </div>
             
+            <!-- Social Login -->
             <div class="social-logins">
                 <div class="social-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -93,4 +101,3 @@
     <script src="{% static 'js/login.js' %}"></script>
 </body>
 </html>
-
