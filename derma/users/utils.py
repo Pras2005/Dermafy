@@ -2,7 +2,7 @@ import secrets
 import time
 from django.core.mail import send_mail
 from django.conf import settings
-
+import re
 
 OTP_EXPIRY_SECONDS = 300  
 OTP_MAX_ATTEMPTS = 3  
@@ -57,3 +57,17 @@ def send_otp_mail(request, email):
     message = f"Your OTP for resetting your password is: {otp}. It is valid for 5 minutes."
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
 
+
+def is_valid_password(password):
+    """
+    Validates password:
+    - At least 8 characters long
+    - At least one special character
+    """
+    if len(password) < 8:
+        return "Password must be at least 8 characters long."
+    
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return "Password must contain at least one special character."
+    
+    return None  # No errors, password is valid

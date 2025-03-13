@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .utils import *
 from django.urls import reverse
+from .models import CUSTOMUSER
+from django.conf import settings
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 
@@ -34,8 +36,6 @@ def user_logout(request):
 
 def user_signup(request):
     if request.method == "POST":
-        print(request.POST)  # Debugging: Check if data is correctly received
-
         username = request.POST.get('username', '')
         password = request.POST.get('password1', '')
         password2 = request.POST.get('password2', '')
@@ -43,20 +43,32 @@ def user_signup(request):
         phone_no = request.POST.get("phone_no", '')
 
         if password != password2:
-            return render(request,"sign_up.html", {"error": "Passwords do not match"})
+            return render(request, "sign_up.html", {"error": "Passwords do not match"})
+
+        # Call the password validation function
+        password_error = is_valid_password(password)
+        if password_error:
+            return render(request, "sign_up.html", {"error": password_error})
 
         if CUSTOMUSER.objects.filter(email=email).exists():
-            return render(request,"sign_up.html", {"error": "Email already exists"})
+            return render(request, "sign_up.html", {"error": "Email already exists"})
 
         try:
+            # Create user
             user = CUSTOMUSER.objects.create_user(username=username, email=email, password=password)
-            user.phone_no = phone_no  # If phone_no isn't part of create_user()
+            user.phone_no = phone_no  # Assign phone number
             user.save()
-        except Exception as e: # Debugging
-            return render(request, "sign_up.html", {"error": "User creation failed. Try again."})
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
-        return redirect('connect_google')  # Ensure this matches `urls.py`
+
+            # Log in the user (fix the multiple authentication backend issue)
+            from django.contrib.auth import get_backends
+            backend = get_backends()[0]  # Get the first authentication backend
+            user.backend = f"{backend.__module__}.{backend.__class__.__name__}"
+            login(request, user)  # Now login works correctly
+
+            return redirect('submit_quiz')
+
+        except Exception as e:
+            return render(request, "sign_up.html", {"error": f"User creation failed: {str(e)}"})
 
     return render(request, "sign_up.html")
 
