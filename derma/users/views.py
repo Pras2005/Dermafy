@@ -222,4 +222,5 @@ def connect_google(request):
  
 
     return render(request, "connect_google.html")
-
+def scan(request):
+    return render(request,"scan.html")
