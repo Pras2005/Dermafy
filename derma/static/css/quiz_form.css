@@ -23,7 +23,7 @@ html {
 
 
 .container {
-    width: 65%; /* Increased width */
+    width: 80%; /* Increased width */
     padding: 60px; /* Increased padding */
     background: transparent;
     backdrop-filter: blur 10px;

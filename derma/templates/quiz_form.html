@@ -1,25 +1,36 @@
 {% load static %}
-<form id="quiz-form" method="post" action="{% url 'submit_quiz' %}">
-    {% csrf_token %}
-    <div class="container">
-        <div class="quiz-container" id="quiz">
-            <div class="quiz-header">
-                <h2>Skin Analysis</h2>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" id="progress-bar"></div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Analysis</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/quiz_form.css' %}">
+</head>
+<body>
+    <form id="quiz-form" method="post" action="{% url 'submit_quiz' %}">
+        {% csrf_token %}
+        <div class="container">
+            <div class="quiz-container" id="quiz">
+                <div class="quiz-header">
+                    <h2>Skin Analysis</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" id="progress-bar"></div>
+                    </div>
+                </div>
+                <div id="question-container">
+                    <p class="question" id="question"></p>
+                    <div class="options" id="options"></div>
+                </div>
+                <div class="quiz-footer">
+                    <button class="btn" id="next-btn" type="button">Next</button>
+                    <button id="submit-btn" class="btn" type="submit" style="display:none;">Submit</button>
                 </div>
             </div>
-            <div id="question-container">
-                <p class="question" id="question"></p>
-                <div class="options" id="options"></div>
-            </div>
-            <div class="quiz-footer">
-                <button class="btn" id="next-btn" type="button">Next</button>
-                <button id="submit-btn" class="btn" type="submit" style="display:none;">Submit</button>
-            </div>
         </div>
-    </div>
-</form>
+    </form>
 
-<script src="{% static 'js/quiz_form.js' %}"></script>
+    <script src="{% static 'js/quiz_form.js' %}"></script>
+</body>
+</html>
+
 

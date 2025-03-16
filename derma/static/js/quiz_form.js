@@ -9,14 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
         { name: "skin_conditions", question: "Do you have any skin conditions?", options: ["Eczema", "Psoriasis", "Rosacea", "None"] },
         { name: "after_washing_skin_feel", question: "How does your skin feel after washing?", options: ["Comfortable", "Tight", "Oily", "Irritated"] },
         { name: "water_intake", question: "How much water do you drink daily?", options: ["Less than 1L", "1-2L", "More than 2L", "I don't track"] },
-        { name: "dark_spots_pigmentation", question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] }
+        { name: "dark_spots_pigmentation", question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] },
+        { name: "visible_pores", question: "Do you have visible pores?", options: ["None", "Few", "Moderate", "Large"] },
+        { name: "exfoliation_frequency", question: "How often do you exfoliate?", options: ["Daily", "2-3 times a week", "Once a week", "Rarely"] },
+        { name: "fine_lines_wrinkles", question: "Do you have fine lines or wrinkles?", options: ["None", "Light", "Moderate", "Severe"] },
+        { name: "dairy_processed_food_intake", question: "How often do you consume dairy or processed foods?", options: ["Daily", "Often", "Rarely", "Never"] },
+        { name: "skincare_routine", question: "Do you follow a skincare routine?", options: ["Yes, regularly", "Sometimes", "Rarely", "Never"] }
     ];
 
     let currentQuestionIndex = 0;
-    let userResponses = {};  // Store responses
+    let userResponses = {};
     let selectedOption = null;
 
-    // Get elements
     const questionEl = document.getElementById("question");
     const optionsEl = document.getElementById("options");
     const nextBtn = document.getElementById("next-btn");
@@ -39,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const button = document.createElement("button");
             button.classList.add("option");
             button.textContent = option;
-            button.setAttribute("type", "button"); // Prevent accidental form submission
+            button.setAttribute("type", "button");
             button.addEventListener("click", () => selectAnswer(button, currentQuestion.name, option));
             optionsEl.appendChild(button);
         });
@@ -56,12 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function selectAnswer(button, fieldName, option) {
-        // Remove selected class from all buttons
         document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
-
-        // Highlight selected option
         button.classList.add("selected");
-
         selectedOption = option;
         userResponses[fieldName] = option;
         nextBtn.disabled = false;
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         nextBtn.style.display = "none";
         submitBtn.style.display = "block";
 
-        // Ensure all responses are included in the form before submitting
+        // Create hidden input fields for all answers
         Object.keys(userResponses).forEach(field => {
             if (!quizForm.querySelector(`input[name="${field}"]`)) {
                 const input = document.createElement("input");
@@ -102,4 +102,3 @@ document.addEventListener("DOMContentLoaded", function () {
     nextBtn.addEventListener("click", nextQuestion);
     showQuestion();
 });
-

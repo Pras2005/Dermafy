@@ -11,9 +11,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 
 def home(request):
-    return render(request, "index.html")
-
-
+    return render(request, "home.html")
 
 def user_login(request):
     if request.method=="POST":
@@ -22,7 +20,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("dashboard")#dasboard funtion write the blo0ody thing prayag
+            return redirect("dashboard")#dasboard funtion write the blo0ody thing prayag, Written on line 91 asshole
         else:
             messages.error(request, "Invalid username or password")
 
@@ -64,29 +62,32 @@ def user_signup(request):
 @login_required
 def submit_quiz(request):
     if request.method == "POST":
-        QuizResponse.objects.create(
-            user=request.user,
-            primary_skin_concern=request.POST.get("primary_skin_concern"),
-            skin_type=request.POST.get("skin_type"),
-            breakout_frequency=request.POST.get("breakout_frequency"),
-            reaction_to_skincare=request.POST.get("reaction_to_skincare"),
-            redness_inflammation=request.POST.get("redness_inflammation"),
-            sunscreen_usage=request.POST.get("sunscreen_usage"),
-            skin_conditions=request.POST.get("skin_conditions"),
-            after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
-            water_intake=request.POST.get("water_intake"),
-            dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
-            visible_pores=request.POST.get("visible_pores"),
-            exfoliation_frequency=request.POST.get("exfoliation_frequency"),
-            fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
-            dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
-            skincare_routine=request.POST.get("skincare_routine"),
-        )
-        messages.success(request, "Quiz submitted successfully!")
-        return redirect("dashboard")  # Redirect to a report or homepage
+        try:        # Added the try-except block for not giving error -RONIN
+            QuizResponse.objects.create(
+                user=request.user,
+                primary_skin_concern=request.POST.get("primary_skin_concern"),
+                skin_type=request.POST.get("skin_type"),
+                breakout_frequency=request.POST.get("breakout_frequency"),
+                reaction_to_skincare=request.POST.get("reaction_to_skincare"),
+                redness_inflammation=request.POST.get("redness_inflammation"),
+                sunscreen_usage=request.POST.get("sunscreen_usage"),
+                skin_conditions=request.POST.get("skin_conditions"),
+                after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
+                water_intake=request.POST.get("water_intake"),
+                dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
+                visible_pores=request.POST.get("visible_pores"),
+                exfoliation_frequency=request.POST.get("exfoliation_frequency"),
+                fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
+                dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
+                skincare_routine=request.POST.get("skincare_routine"),
+            )
+            messages.success(request, "Quiz submitted successfully!")
+            return redirect("dashboard")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+            return redirect("quiz_form")
 
     return render(request, "quiz_form.html")
-#
 
 # Dashboard -RONIN
 @login_required
@@ -100,7 +101,6 @@ def dashboard(request):
         'skin_progress': skin_progress,
     }
     return render(request, 'dashboard.html', context)
-
 
 def reports(request):
     all_reports = Report.objects.filter(user=request.user).order_by('-date')
@@ -222,5 +222,6 @@ def connect_google(request):
  
 
     return render(request, "connect_google.html")
+
 def scan(request):
     return render(request,"scan.html")

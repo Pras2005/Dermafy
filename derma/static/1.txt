@@ -1,5 +1,5 @@
 hell
-This file doesn't mean anything but kept because it was created in sake of learning
+This file doesn't mean anything but kept because it was created for sake of learning
 ▒▒▒▒▒▒▒▄██████████▄▒▒▒▒▒▒▒
 ▒▒▒▒▒▄██████████████▄▒▒▒▒▒
 ▒▒▒▒██████████████████▒▒▒▒
