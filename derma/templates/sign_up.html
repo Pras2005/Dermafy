@@ -59,7 +59,7 @@
                 <div class="form-group password-field">
                     <input type="password" id="password1" name="password1" placeholder="Enter your password" required />
                     <span class="password-toggle" onclick="togglePassword()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -97,32 +97,21 @@
         </div>
     </div>
     
-    <script src="{% static 'js/signup.js' %}"></script>
     <script>
-        function validateForm() {
-            let password = document.getElementById("password1").value;
-            let confirmPassword = document.getElementById("password2").value;
-            let errorText = document.getElementById("password-error");
-
-            let regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-            if (!regex.test(password)) {
-                errorText.textContent = "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.";
-                return false;
-            }
-            
-            if (password !== confirmPassword) {
-                errorText.textContent = "Passwords do not match.";
-                return false;
-            }
-
-            errorText.textContent = "";
-            return true;
-        }
-
         function togglePassword() {
             let password = document.getElementById("password1");
-            password.type = password.type === "password" ? "text" : "password";
+            let eyeIcon = document.getElementById("eyeIcon");
+
+            if (password.type === "password") {
+                password.type = "text";
+                eyeIcon.innerHTML = `<path d="M4 4L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+            } else {
+                password.type = "password";
+                eyeIcon.innerHTML = `
+                    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                `;
+            }
         }
     </script>
 </body>

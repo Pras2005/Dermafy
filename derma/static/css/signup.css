@@ -8,30 +8,38 @@
 body {
     background: url('/static/images/bg_flow1.jpg') no-repeat center center fixed;
     background-size: cover;
-    height: 100vh; /* Ensures it covers the full viewport */
+    background-attachment: scroll;
+    height: auto; /* Ensures it covers the full viewport */
     min-height: 100vh;
-    display: flex;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
     justify-content: center;
     align-items: center;
+    height: auto; /* Removes the fixed height restriction */
+
 }
 
 html {
     height: 100%;
-    overflow: hidden; /* Prevents scrolling and image tearing */
+    overflow: auto; /* Prevents scrolling and image tearing */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
 .container {
     max-width: 1000px;
-    height: 90%;
+    height: auto;
     width: 90%;
     background-color: #131313;
     border-radius: 16px;
-    overflow: hidden;
+    overflow-y: hidden;
     display: flex;
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
     backdrop-filter: blur 10px;
     background: transparent;
+    min-height: 90vh;
 }
 
 .container * {
@@ -142,6 +150,7 @@ html {
     width: 55%;
     padding: 40px;
     color: white;
+    
 }
 
 h1 {

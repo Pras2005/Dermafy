@@ -68,7 +68,7 @@ def user_signup(request):
             return redirect('submit_quiz')
 
         except Exception as e:
-            return render(request, "sign_up.html", {"error": f"User creation failed: {str(e)}"})
+            return render(request, "sign_up.html", {"error": "Username already taken, please try a different one."})
 
     return render(request, "sign_up.html")
 
@@ -76,29 +76,32 @@ def user_signup(request):
 @login_required
 def submit_quiz(request):
     if request.method == "POST":
-        QuizResponse.objects.create(
-            user=request.user,
-            primary_skin_concern=request.POST.get("primary_skin_concern"),
-            skin_type=request.POST.get("skin_type"),
-            breakout_frequency=request.POST.get("breakout_frequency"),
-            reaction_to_skincare=request.POST.get("reaction_to_skincare"),
-            redness_inflammation=request.POST.get("redness_inflammation"),
-            sunscreen_usage=request.POST.get("sunscreen_usage"),
-            skin_conditions=request.POST.get("skin_conditions"),
-            after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
-            water_intake=request.POST.get("water_intake"),
-            dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
-            visible_pores=request.POST.get("visible_pores"),
-            exfoliation_frequency=request.POST.get("exfoliation_frequency"),
-            fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
-            dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
-            skincare_routine=request.POST.get("skincare_routine"),
-        )
-        messages.success(request, "Quiz submitted successfully!")
-        return redirect("dashboard")  # Redirect to a report or homepage
+        try:        # Added the try-except block for not giving error -RONIN
+            QuizResponse.objects.create(
+                user=request.user,
+                primary_skin_concern=request.POST.get("primary_skin_concern"),
+                skin_type=request.POST.get("skin_type"),
+                breakout_frequency=request.POST.get("breakout_frequency"),
+                reaction_to_skincare=request.POST.get("reaction_to_skincare"),
+                redness_inflammation=request.POST.get("redness_inflammation"),
+                sunscreen_usage=request.POST.get("sunscreen_usage"),
+                skin_conditions=request.POST.get("skin_conditions"),
+                after_washing_skin_feel=request.POST.get("after_washing_skin_feel"),
+                water_intake=request.POST.get("water_intake"),
+                dark_spots_pigmentation=request.POST.get("dark_spots_pigmentation"),
+                visible_pores=request.POST.get("visible_pores"),
+                exfoliation_frequency=request.POST.get("exfoliation_frequency"),
+                fine_lines_wrinkles=request.POST.get("fine_lines_wrinkles"),
+                dairy_processed_food_intake=request.POST.get("dairy_processed_food_intake"),
+                skincare_routine=request.POST.get("skincare_routine"),
+            )
+            messages.success(request, "Quiz submitted successfully!")
+            return redirect("dashboard")
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+            return redirect("quiz_form")
 
     return render(request, "quiz_form.html")
-#
 
 # Dashboard -RONIN
 @login_required
