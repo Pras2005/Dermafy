@@ -51,7 +51,6 @@ class QuizResponse(models.Model):
 
 class SkinProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="skin_progress")
-    image = models.ImageField(upload_to="progress_images/")
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -60,6 +59,8 @@ class SkinProgress(models.Model):
 class Report(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
     details = models.TextField()
+    image = models.ImageField(upload_to="progress_images/",null =True,blank=True)
+
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):

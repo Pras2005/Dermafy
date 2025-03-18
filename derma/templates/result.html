@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Skin Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .report-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .report-content strong {
+            font-size: 1.2em;
+            color: #333;
+        }
+        .report-content {
+            font-size: 1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <h2>Skin Analysis Report</h2>
+        <div class="report-content">{{ report|safe }}</div>
+        <br>
+        <a href="/" style="display: block; text-align: center; font-size: 1.1em; color: #007bff;">Upload Another Image</a>
+    </div>
+</body>
+</html>
+
