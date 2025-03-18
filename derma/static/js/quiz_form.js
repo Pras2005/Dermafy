@@ -9,8 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
         { name: "skin_conditions", question: "Do you have any skin conditions?", options: ["Eczema", "Psoriasis", "Rosacea", "None"] },
         { name: "after_washing_skin_feel", question: "How does your skin feel after washing?", options: ["Comfortable", "Tight", "Oily", "Irritated"] },
         { name: "water_intake", question: "How much water do you drink daily?", options: ["Less than 1L", "1-2L", "More than 2L", "I don't track"] },
-        { name: "dark_spots_pigmentation", question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] }
+        { name: "dark_spots_pigmentation", question: "Do you have dark spots or pigmentation?", options: ["No", "Light spots", "Visible spots", "Severe pigmentation"] },
+        { name: "visible_pores", question: "Are your pores visibly large?", options: ["No", "Slightly", "Moderate", "Very visible"] },
+        { name: "exfoliation_frequency", question: "How often do you exfoliate your skin?", options: ["Daily", "Few times a week", "Rarely", "Never"] },
+        { name: "fine_lines_wrinkles", question: "Do you have fine lines or wrinkles?", options: ["No", "Few lines", "Visible wrinkles", "Deep wrinkles"] },
+        { name: "dairy_processed_food_intake", question: "How often do you consume dairy or processed foods?", options: ["Daily", "Few times a week", "Rarely", "Never"] },
+        { name: "skincare_routine", question: "Do you follow a skincare routine?", options: ["Yes, consistently", "Sometimes", "Rarely", "No routine"] }
     ];
+    
 
     let currentQuestionIndex = 0;
     let userResponses = {};  // Store responses
@@ -23,6 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const submitBtn = document.getElementById("submit-btn");
     const progressBar = document.getElementById("progress-bar");
     const quizForm = document.getElementById("quiz-form");
+    quizForm.addEventListener("submit", function(event) {
+        // Only allow form submission when we're at the end of the quiz
+        if (currentQuestionIndex < questions.length - 1) {
+            event.preventDefault();
+        }
+    });
 
     function showQuestion() {
         resetState();
@@ -102,4 +114,3 @@ document.addEventListener("DOMContentLoaded", function () {
     nextBtn.addEventListener("click", nextQuestion);
     showQuestion();
 });
-

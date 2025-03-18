@@ -33,6 +33,8 @@ CSRF_TRUSTED_ORIGINS = [
 
 AUTH_USER_MODEL = 'users.CUSTOMUSER'
 
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
