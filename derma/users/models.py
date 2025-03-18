@@ -50,12 +50,32 @@ class QuizResponse(models.Model):
 # Upto here
 
 class SkinProgress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="skin_progress")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name="skin_progress"
+    )
     image = models.ImageField(upload_to="progress_images/")
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Progress of {self.user.username} on {self.date}"
+        return f"{self.user.username} - Progress on {self.date.strftime('%Y-%m-%d')}"
+
+
+class SkincareRoutine(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name="skincare_routines"
+    )
+    routine = models.JSONField() # Change to txt field
+    recommended_products = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - Routine on {self.created_at.strftime('%Y-%m-%d')}"
+
+
 
 class Report(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")

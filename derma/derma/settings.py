@@ -12,6 +12,21 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+
+# ✅ Define BASE_DIR
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# ✅ Initialize environment
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# ✅ Load API Key
+GOOGLE_API_KEY = env('GOOGLE_API_KEY', default=None)
+
+if not GOOGLE_API_KEY:
+    raise Exception("GOOGLE_API_KEY not found in .env file.")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

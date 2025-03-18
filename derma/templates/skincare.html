@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skincare Routine</title>
+    <link rel="stylesheet" href="{% static 'css/skincare.css' %}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="{% url 'skincare_report' %}">
+                <button>View Skincare Report</button>
+            </a>
+        </nav>
+
+        <h1>Your Skincare Routine</h1>
+        <p><strong>Date:</strong> {{ created_at }}</p>
+
+        <h2>Routine Steps:</h2>
+        {% for routine in routines %}
+        <div class="routine-step">
+            <h3>{{ routine.step_title }}</h3>
+            <p>{{ routine.description }}</p>
+            <p><strong>Frequency:</strong> {{ routine.frequency }}</p>
+        </div>
+        {% empty %}
+        <p>No routine steps found.</p>
+        {% endfor %}
+
+        <div class="routine-list">
+            {% for step in routine %}
+            <div class="routine-step">
+                <h3>Step {{ step.step }}: {{ step.name }}</h3>
+                <p><strong>Description:</strong> {{ step.description }}</p>
+                <p><strong>Frequency:</strong> {{ step.frequency }}</p>
+            </div>
+            {% empty %}
+            <p>No routine steps found.</p>
+            {% endfor %}
+        </div>
+
+        <h2>Recommended Products:</h2>
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product-item">
+                <h3>{{ product.type }}</h3>
+                <p><strong>Key Ingredients:</strong> {{ product.key_ingredients }}</p>
+                <p><strong>Avoid:</strong> {{ product.avoid }}</p>
+            </div>
+            {% empty %}
+            <p>No recommended products found.</p>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="{% url 'generate_skincare_report' %}">
+            {% csrf_token %}
+            <button type="submit">Generate Skincare Report</button>
+        </form>
+    </div>
+</body>
+</html>
+

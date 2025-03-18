@@ -1,0 +1,37 @@
+body {
+    background-color: #1e1e2f;  /* Dark theme */
+    color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+}
+
+.container {
+    background-color: #25253c;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    color: #c084fc;
+}
+
+.routine-list, .product-list {
+    margin-top: 10px;
+}
+
+.routine-step, .product-item {
+    background-color: #2d2d4f;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+    color: #8b5cf6;
+    margin-bottom: 5px;
+}
