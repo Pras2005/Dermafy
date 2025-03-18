@@ -20,6 +20,6 @@ urlpatterns =[
         path("verify-reset-otp/", verify_reset_otp, name="verify_reset_otp"),
         path("reset-password/", reset_password, name="reset_password"),
         path('connect-google/', connect_google, name='connect_google'),
-        path('scan/',scan,name='scan'),
+        #path('scan/',scan,name='scan'),
         
         ]

@@ -50,12 +50,7 @@ class QuizResponse(models.Model):
 # Upto here
 
 class SkinProgress(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, 
-        on_delete=models.CASCADE, 
-        related_name="skin_progress"
-    )
-    image = models.ImageField(upload_to="progress_images/")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="skin_progress")
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -80,6 +75,8 @@ class SkincareRoutine(models.Model):
 class Report(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
     details = models.TextField()
+    image = models.ImageField(upload_to="progress_images/",null =True,blank=True)
+
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):

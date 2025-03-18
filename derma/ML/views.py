@@ -1,3 +1,9 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from users.models import *
+from .utils import *  # Ensure this function is correctly imported
+from django.contrib.auth.decorators import login_required
+import os
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -88,6 +94,40 @@ def get_skincare(request):
         return HttpResponse("<h1>Error:</h1><p>No quiz responses found.</p>", status=404)
     except Exception as e:
         return HttpResponse(f"<h1>Unexpected Error:</h1><p>{str(e)}</p>", status=500)
+
+
+
+@login_required
+def scan_img(request):
+    if request.method == "POST" and request.FILES.get("image"):
+        user_description = request.POST.get("description", "")
+        image = request.FILES["image"]
+        
+        # Save uploaded image
+        upload_dir = os.path.join(settings.MEDIA_ROOT, "uploads")
+        os.makedirs(upload_dir, exist_ok=True)
+
+        # Save uploaded image
+        image_path = os.path.join(upload_dir, image.name)
+        with open(image_path, "wb+") as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+        
+        # Get latest quiz response from user
+        quiz_response = QuizResponse.objects.filter(user=request.user).latest("submitted_at")
+        
+        model_path = os.path.join(settings.BASE_DIR, "ML", "yolo_best.pt")
+        model = load_model(model_path)
+        top5_predictions = classify_image(model, image_path)
+        
+        html_report = generate_skin_advice(top5_predictions, user_description, quiz_response)
+        
+        # Store report in database
+        report = Report.objects.create(user=request.user, details=html_report, image=image)
+        
+        return render(request, "result.html", {"report": html_report})
+    
+    return render(request, "upload.html")
 
 
 def skincare(request):
