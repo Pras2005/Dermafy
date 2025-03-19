@@ -1,21 +1,254 @@
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for="image">Profile Picture:</label>
-    <input type="file" name="image" required><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background-color: #000;
+            /* Background image will be added by you */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
-    <label for="name">Name:</label>
-    <input type="text" name="name" required><br>
+        .container {
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* White box shadow */
+            border: 1px solid rgba(128, 0, 128, 0.3); /* Subtle purple border */
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+        }
 
-    <label for="age">Age:</label>
-    <input type="text" name="age" required><br>
+        h2 {
+            color: #bb86fc; /* Light purple */
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-align: center;
+        }
 
-    <label for="gender">Gender:</label>
-    <select name="gender">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-    </select><br>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-    <button type="submit">Submit</button>
-</form>
+        .form-group {
+            margin-bottom: 20px;
+        }
 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bb86fc;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(128, 0, 128, 0.5);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px 0;
+            color: white;
+        }
+
+        /* Custom styling for file input */
+        .file-input-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #9945FF, #6600cc);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #bb86fc;
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+        }
+
+        button {
+            background: linear-gradient(45deg, #9945FF, #6600cc);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            align-self: center;
+            width: 50%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(128, 0, 128, 0.4);
+        }
+
+        .icon {
+            color: #bb86fc;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">👤</div>
+        <h2>Create Your Profile</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="image">Profile Picture:</label>
+                <div class="file-input-container">
+                    <div class="file-input-button">Choose File</div>
+                    <span class="file-name">No file chosen</span>
+                    <input type="file" name="image" id="image" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="text" name="age" id="age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select name="gender" id="gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulsing effect to the container
+            const container = document.querySelector('.container');
+            
+            function pulseEffect() {
+                container.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.7)';
+                
+                setTimeout(() => {
+                    container.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+                }, 1000);
+            }
+
+            // Pulse effect every 3 seconds
+            setInterval(pulseEffect, 3000);
+            
+            // Display file name when file is selected
+            const fileInput = document.querySelector('input[type="file"]');
+            const fileName = document.querySelector('.file-name');
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileName.textContent = this.files[0].name;
+                } else {
+                    fileName.textContent = 'No file chosen';
+                }
+            });
+            
+            // Basic form validation
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const nameInput = document.getElementById('name');
+                const ageInput = document.getElementById('age');
+                
+                if (!nameInput.value.trim()) {
+                    e.preventDefault();
+                    alert('Please enter your name');
+                    nameInput.focus();
+                    return;
+                }
+                
+                if (!ageInput.value.trim()) {
+                    e.preventDefault();
+                    alert('Please enter your age');
+                    ageInput.focus();
+                    return;
+                }
+                
+                // Validate age is a number
+                if (isNaN(ageInput.value)) {
+                    e.preventDefault();
+                    alert('Age must be a number');
+                    ageInput.focus();
+                    return;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,3 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skin Analysis Report</title>
+  <!-- Include the dashboard theme CSS -->
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <style>
+    /* Additional styles specific to the report output */
+    .report-container {
+      max-width: 800px;
+      margin: 100px auto; /* provides spacing from the fixed header */
+      padding: 20px;
+      background: var(--card-bg); /* matches the card background in the dashboard theme */
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      color: var(--text-primary);
+    }
+    .report-container h2 {
+      margin-bottom: 20px;
+    }
+    .report-content {
+      font-size: 1em;
+      line-height: 1.6;
+    }
+    .report-content strong {
+      font-size: 1.2em;
+      color: var(--text-primary);
+    }
+    .upload-link {
+      display: block;
+      text-align: center;
+      font-size: 1.1em;
+      color: var(--accent-color);
+      margin-top: 20px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <h2>Skin Analysis Report</h2>
+    <div class="report-content">{{ report|safe }}</div>
+    <a href="/" class="upload-link">Upload Another Image</a>
+  </div>
+</body>
+</html>
+
+<!-- THIS WAS EARLIER SCAN RESULT WAS WORKING FINE BUT CHANGED FOR APPEREANCE -RONIN
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,3 +88,4 @@
 </body>
 </html>
 
+-->

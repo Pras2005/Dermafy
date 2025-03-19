@@ -2,22 +2,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaNova Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+  <div class="top-section"></div>
+  <div class="bottom-section"></div>
+  
+  <!-- Header -->
+  <header class="header">
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="app-title">DermaNova</div>
+    <div class="user-profile" id="user-profile">
+      <!-- Display user initials: if first_name exists, use the first letter(s) -->
+      <div class="user-icon">
+        {% if user.first_name %}
+          {{ user.first_name|slice:":1"|upper }}{% if user.last_name %}{{ user.last_name|slice:":1"|upper }}{% endif %}
+        {% else %}
+          {{ user.username|slice:":2"|upper }}
+        {% endif %}
+      </div>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="user-info">
+          <div class="username">
+            {% if user.get_full_name %}
+              {{ user.get_full_name }}
+            {% else %}
+              {{ user.username }}
+            {% endif %}
+          </div>
+          <div class="user-email">{{ user.email }}</div>
+        </div>
+        <a href="{% url 'user_logout' %}" class="dropdown-item">
+          <i>🔒</i> Logout
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <a href="{% url 'dashboard' %}" class="sidebar-link active">
+      <i>📊</i> Dashboard
+    </a>
+    <a href="{% url 'skincare' %}" class="sidebar-link">
+      <i>💆</i> Skincare
+    </a>
+    <a href="{% url 'scan' %}" class="sidebar-link">
+      <i>🔍</i> Let's Detect
+    </a>
+    <a href="{% url 'reports' %}" class="sidebar-link">
+      <i>📝</i> Reports
+    </a>
+    <a href="{% url 'consult' %}" class="sidebar-link">
+      <i>👨‍⚕️</i> Consult
+    </a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <div class="dashboard-header">
+      <h1>Welcome back, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}!</h1>
+      <p>Here's your skin health overview.</p>
+    </div>
+
+    <!-- Recent Scans Section -->
+    <section class="recent-scans">
+      <h2 class="section-title">
+        Recent Scans
+        <a href="{% url 'scan' %}">View All</a>
+      </h2>
+      <div class="scans-grid">
+        {% for scan in recent_scans %}
+        <div class="scan-card">
+          <div class="scan-image">
+            {% if scan.image %}
+              <img src="{{ scan.image.url }}" alt="Scan Image">
+            {% else %}
+              <!-- Placeholder if no image -->
+              <div class="no-image">No Image</div>
+            {% endif %}
+          </div>
+          <div class="scan-details">
+            <div class="scan-date">{{ scan.date|date:"F j, Y" }}</div>
+            <div class="scan-category">{{ scan.category }}</div>
+            <h3 class="scan-title">{{ scan.title }}</h3>
+            <div class="scan-status">
+              <span class="status-indicator {% if scan.status == 'Healthy' %}status-safe{% else %}status-warning{% endif %}"></span>
+              {{ scan.status }}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="empty-container">
+          <p>No scans available.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Latest Report Section -->
+    <section class="latest-report">
+      <h2 class="section-title">
+        Latest Report
+        <a href="{% url 'reports' %}">View All Reports</a>
+      </h2>
+      {% if latest_report %}
+      <div class="report-card">
+        <div class="report-header">
+          <h3>{{ latest_report.title|default:"Skin Health Assessment" }}</h3>
+          <div class="report-date">{{ latest_report.date|date:"F j, Y" }}</div>
+        </div>
+        <div class="report-tags">
+          {% for tag in latest_report.tags %}
+          <span class="report-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <div class="report-content">
+          <p>{{ latest_report.content }}</p>
+        </div>
+        <div class="report-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{ latest_report.overall_health }}<span style="font-size: 1rem;">%</span></div>
+            <div class="stat-label">Overall Health</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ latest_report.hydration }}<span style="font-size: 1rem;">%</span></div>
+            <div class="stat-label">Hydration</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">+{{ latest_report.improvement }}<span style="font-size: 1rem;">%</span></div>
+            <div class="stat-label">Improvement</div>
+          </div>
+        </div>
+        <a href="{% url 'report_detail' latest_report.id %}" class="view-button">View Full Report</a>
+      </div>
+      {% else %}
+      <div class="empty-container">
+        <p>No report available.</p>
+      </div>
+      {% endif %}
+    </section>
+  </main>
+
+  <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>
+
+
+
+
+
+
+<!--
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dermafy Dashboard</title>
+    <title>DermaNova Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
     <div class="top-section"></div>
 <div class="bottom-section"></div>
-    <!-- Header -->
     <header class="header">
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <div class="app-title">Dermfy</div>
+        <div class="app-title">DermaNova</div>
         <div class="user-profile" id="user-profile">
             <div class="user-icon">JD</div>
             <div class="user-dropdown" id="user-dropdown">
@@ -25,12 +188,6 @@
                     <div class="username">username</div>
                     <div class="user-email">john.doe@example.com</div>
                 </div>
-                <!-- <div class="dropdown-item">
-                    <i>👤</i> Profile
-                </div> -->
-                <!-- <div class="dropdown-item">
-                    <i>⚙️</i> Settings
-                </div> -->
                 <a href="login2.html" class="dropdown-item">
                     <i>🔒</i> Logout
                 </a>
@@ -38,7 +195,6 @@
         </div>
     </header>
 
-    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <a href="{% url 'dashboard' %}dashboard" class="sidebar-link active">
             <i>📊</i> Dashboard
@@ -57,21 +213,20 @@
         </a>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content" id="main-content">
         <div class="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back, John! Here's your skin health overview.</p>
+            <h1>Welcome back, John!</h1>
+            <p>Here's your skin health overview.</p>
         </div>
 
-        <!-- Recent Scans Section -->
+
         <section class="recent-scans">
             <h2 class="section-title">
                 Recent Scans
                 <a href="#">View All</a>
             </h2>
             <div class="scans-grid">
-                <!-- Scan 1 -->
+
                 <div class="scan-card">
                     <div class="scan-image"></div>
                     <div class="scan-details">
@@ -85,7 +240,7 @@
                     </div>
                 </div>
 
-                <!-- Scan 2 -->
+
                 <div class="scan-card">
                     <div class="scan-image"></div>
                     <div class="scan-details">
@@ -99,7 +254,7 @@
                     </div>
                 </div>
 
-                <!-- Scan 3 -->
+
                 <div class="scan-card">
                     <div class="scan-image"></div>
                     <div class="scan-details">
@@ -112,7 +267,7 @@
                         </div>
                     </div>
                 </div>
-    <!-- Sidebar Toggle Menu -->
+
     <div class="sidebar">
         <button id="toggle-menu">☰ Menu</button>
         <ul id="menu">
@@ -122,7 +277,7 @@
         </ul>
     </div>
 
-                <!-- Scan 4 -->
+
                 <div class="scan-card">
                     <div class="scan-image"></div>
                     <div class="scan-details">
@@ -138,7 +293,7 @@
             </div>
         </section>
 
-        <!-- Latest Report Section -->
+
         <section class="latest-report">
             <h2 class="section-title">
                 Latest Report
@@ -180,3 +335,5 @@
     </script>
 </body>
 </html>
+
+-->

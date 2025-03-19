@@ -5,3 +5,251 @@
     <button type="submit">Verify OTP</button>
 </form>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0a0a0a;
+            /* Background image to be added by you */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background-color: rgba(20, 20, 20, 0.7); /* Transparent background */
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* White box shadow */
+            border: 1px solid rgba(128, 0, 128, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #bf00ff;
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(191, 0, 255, 0.5);
+        }
+        
+        p {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #d9b3ff;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d9b3ff;
+            font-size: 16px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(30, 30, 30, 0.8);
+            color: white;
+            font-size: 16px;
+            border: 1px solid #4b0082;
+            transition: all 0.3s ease;
+            text-align: center;
+            letter-spacing: 5px;
+            font-size: 20px;
+        }
+        
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(191, 0, 255, 0.8);
+            border-color: #bf00ff;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #9900cc, #660099);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #bf00ff, #9900cc);
+            box-shadow: 0 0 15px rgba(191, 0, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            text-align: center;
+        }
+        
+        .success-message {
+            text-align: center;
+            color: #50fa7b;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .timer {
+            text-align: center;
+            margin-top: 15px;
+            color: #bf00ff;
+            font-size: 14px;
+        }
+        
+        .resend {
+            background: none;
+            border: none;
+            color: #d9b3ff;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+            text-align: center;
+            width: auto;
+            margin: 15px auto 0;
+        }
+        
+        .resend:hover {
+            color: #bf00ff;
+            background: none;
+            box-shadow: none;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OTP Verification</h1>
+        <p>We've sent a one-time password to your registered email/phone</p>
+        
+        <form id="otpVerificationForm" method="post">
+            <div class="form-group">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" name="otp" maxlength="6" inputmode="numeric" pattern="[0-9]*" required>
+                <div class="error-message" id="otp-error"></div>
+            </div>
+            
+            <button type="submit">Verify OTP</button>
+        </form>
+        
+        <div class="timer" id="timer">OTP expires in: <span id="countdown">05:00</span></div>
+        <button class="resend" id="resend-btn" disabled>Resend OTP</button>
+        
+        <div class="success-message" id="success-message">OTP verified successfully!</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('otpVerificationForm');
+            const otpInput = document.getElementById('otp');
+            const otpError = document.getElementById('otp-error');
+            const successMessage = document.getElementById('success-message');
+            const resendBtn = document.getElementById('resend-btn');
+            const countdownEl = document.getElementById('countdown');
+            
+            // Only allow numbers in the OTP field
+            otpInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+            
+            // Set up countdown timer (5 minutes)
+            let timeLeft = 300; // 5 minutes in seconds
+            
+            const countdownTimer = setInterval(function() {
+                const minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                
+                countdownEl.textContent = minutes + ':' + seconds;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownEl.textContent = '00:00';
+                    resendBtn.disabled = false;
+                }
+                timeLeft--;
+            }, 1000);
+            
+            // Resend OTP functionality
+            resendBtn.addEventListener('click', function() {
+                // In a real application, you would call your API to resend the OTP
+                this.disabled = true;
+                this.textContent = 'OTP Sent!';
+                
+                // Reset the timer
+                timeLeft = 300;
+                setTimeout(() => {
+                    this.textContent = 'Resend OTP';
+                }, 3000);
+            });
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset error message
+                otpError.style.display = 'none';
+                
+                let isValid = true;
+                
+                // Validate OTP length
+                if (otpInput.value.length < 4 || otpInput.value.length > 6) {
+                    otpError.textContent = 'Please enter a valid OTP code';
+                    otpError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // If validation passes
+                if (isValid) {
+                    // In a real application, you would verify the OTP with your server
+                    // For this demo, we'll just show a success message
+                    form.style.display = 'none';
+                    document.getElementById('timer').style.display = 'none';
+                    resendBtn.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Simulating form submission
+                    console.log('Form would be submitted with OTP:', otpInput.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

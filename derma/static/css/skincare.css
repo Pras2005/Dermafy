@@ -1,5 +1,326 @@
+/* Dark Theme with Black and Purple */
+:root {
+    --bg-color: #121212;
+    --primary-color:rgb(64, 33, 174);
+    --secondary-color:rgb(3, 1, 46);
+    --text-color: #f5f5f5;
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --shadow-color: rgba(255, 255, 255, 0.1);
+    --accent-color:rgb(86, 89, 171);
+    --error-color: #f44336;
+    --success-color: #4caf50;
+}   
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #1e1e2f;  /* Dark theme */
+    font-family: 'Poppins', sans-serif;
+    background: url('/static/images/bg_flow1.jpg') no-repeat center center fixed;
+    background-size:cover;
+
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 0 30px var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+nav h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--shadow-color);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(48, 39, 176, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(50, 39, 176, 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+/* Main content layout */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Routine and Product sections */
+.routine-section, .report-section {
+    background-color: rgba(30, 30, 30, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.date {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+h2:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--secondary-color);
+}
+
+.routine-list, .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.routine-step, .product-item {
+    background-color: rgba(40, 40, 40, 0.8);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.routine-step:hover, .product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(156, 39, 176, 0.15);
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: var(--accent-color);
+}
+
+p {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+p strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Report Section */
+.report-section {
+    margin-top: 2rem;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    width: 100%;
+}
+
+.spinner {
+    animation: rotate 2s linear infinite;
+}
+
+.spinner .path {
+    stroke: var(--primary-color);
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+/* Tabs */
+.recommendation-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+    background: transparent;
+    color: var(--text-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn:after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-btn.active, .tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.tab-btn.active:after, .tab-btn:hover:after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* AI Insight Section */
+.ai-insight {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(46, 27, 154, 0.1), rgba(156, 39, 176, 0.1));
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.ai-insight h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.insight-content {
+    padding: 1rem;
+    background-color: rgba(40, 40, 40, 0.5);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Error state */
+.error {
+    color: var(--error-color);
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .routine-list, .product-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .recommendation-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 0.8rem 0.5rem;
+        text-align: center;
+    }
+}
+
+
+
+/*
+body {
+    background-color: #1e1e2f;  
     color: #f5f5f5;
     font-family: 'Poppins', sans-serif;
     padding: 20px;
@@ -35,3 +356,4 @@ h3 {
     color: #8b5cf6;
     margin-bottom: 5px;
 }
+*/

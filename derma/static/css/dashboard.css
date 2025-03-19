@@ -52,6 +52,15 @@ body {
     z-index: 1000;
 }
 
+.empty-container {
+    min-height: 200px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #ccc;
+    margin: 20px;
+}
+
 .menu-toggle {
     cursor: pointer;
     display: flex;

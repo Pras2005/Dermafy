@@ -1,14 +1,170 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Profile Deletion</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background-color: #000;
+            /* Background image will be added by you */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
-<div class="container mt-5">
-    <h2>Confirm Profile Deletion</h2>
-    <p>Are you sure you want to delete your profile, <strong>{{ profile.name }}</strong>? This action cannot be undone.</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Yes, Delete</button>
-        <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
+        .container {
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* White box shadow */
+            border: 1px solid rgba(128, 0, 128, 0.3); /* Subtle purple border */
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+        }
 
+        h2 {
+            color: #bb86fc; /* Light purple */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
 
+        p {
+            margin: 15px 0 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        strong {
+            color: #ff86fc; /* Brighter purple for emphasis */
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #FF5370, #FF0040);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #555, #333);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 7px 14px rgba(255, 0, 64, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 7px 14px rgba(85, 85, 85, 0.4);
+        }
+
+        .icon {
+            color: #ff5370;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animation for warning effect */
+        @keyframes warningPulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .warning-container {
+            border: 1px solid rgba(255, 83, 112, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            animation: warningPulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="icon">⚠️</div>
+        <h2>Confirm Profile Deletion</h2>
+        
+        <div class="warning-container">
+            <p>Are you sure you want to delete your profile, <strong>{{ profile.name }}</strong>? This action cannot be undone.</p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulsing effect to the container
+            const container = document.querySelector('.container');
+            
+            function pulseEffect() {
+                container.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.7)';
+                
+                setTimeout(() => {
+                    container.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.5)';
+                }, 1000);
+            }
+
+            // Pulse effect every 3 seconds
+            setInterval(pulseEffect, 3000);
+            
+            // Add confirmation dialog
+            const deleteForm = document.querySelector('form');
+            deleteForm.addEventListener('submit', function(e) {
+                const confirmed = confirm("This will permanently delete your profile. Are you absolutely sure?");
+                if (!confirmed) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
