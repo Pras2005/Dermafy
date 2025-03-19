@@ -130,155 +130,164 @@ def classify_image(model, image_path):
     
     return top5_classes
 
+import re
+
+def add_newlines_before_all_caps(text):
+    # This regex matches words that consist of 2 or more capital letters.
+    pattern = re.compile(r'(?<!\n)(\b[A-Z]{2,}\b)')
+    # Insert a newline before each all-caps word
+    new_text = pattern.sub(r'\n\1', text)
+    return new_text
+
+
+
+
+def clean_response(text):
+    """
+    Cleans AI-generated text by:
+    - Removing markdown characters (*, #, _)
+    - Adding extra newlines for readability (optional).
+    """
+    # Remove any asterisks, hashes, underscores
+    text = re.sub(r'[\*\#\_]', '', text)
+    
+    # Optionally, ensure paragraph spacing
+    text = re.sub(r'\n+', '\n\n', text)
+
+    text=add_newlines_before_all_caps(text)
+    
+    # Strip leading/trailing whitespace
+    return text.strip()
 
 def generate_skin_advice(model_response, user_description, quiz_response):
     """
-    Generates a structured Markdown report based on AI skin condition classification, user input, and quiz response.
-    
-    Returns:
-        Markdown text formatted for conversion into an HTML report.
+    Generates a structured skin analysis report in clear, readable format.
     """
-    
+    # Updated system instruction: only formatting instructions are changed.
     sys_instruct = (
-        "You are an expert dermatologist specializing in detailed skin condition analysis. "
-        "Your responses should be precise, medically accurate, and well-structured. Format the output in Markdown."
-        "your response should avoid mention of ai and technical jargon and should be catered towards a layman"
+        "You are an expert dermatologist. "
+        "Provide a detailed, structured skin condition report in plain English. "
+        "Ensure readability with clear sections, new lines, and spacing. "
+        "Do NOT use special characters like *, #, or _ for formatting. "
+        "Each section should be clearly separated with a title on its own line, mimicking the structure of a skincare routine report. "
+        "For example, include sections like 'Routine Steps:', 'Recommended Products:', and 'AI Analysis:'. "
+        "Additionally, whenever a word contains two or more consecutive capital letters, insert a newline before and after that word."
     )
 
-    # Format AI model's predictions for better readability
     formatted_conditions = "\n".join(
-        [f"- **{condition}** (Confidence: {confidence:.2f})" for condition, confidence in model_response]
+        [f"- {condition} (Confidence: {confidence:.2f})" for condition, confidence in model_response]
     )
 
-    # Format user-provided skin profile details
     formatted_skin_profile = f"""
-    - **Primary Skin Concern**: {quiz_response.primary_skin_concern}
-    - **Skin Type**: {quiz_response.skin_type}
-    - **Breakout Frequency**: {quiz_response.breakout_frequency}
-    - **Reaction to Skincare**: {quiz_response.reaction_to_skincare}
-    - **Redness & Inflammation**: {quiz_response.redness_inflammation}
-    - **Sunscreen Usage**: {quiz_response.sunscreen_usage}
-    - **Skin Conditions**: {quiz_response.skin_conditions}
-    - **After Washing Skin Feel**: {quiz_response.after_washing_skin_feel}
-    - **Water Intake**: {quiz_response.water_intake}
-    - **Dark Spots & Pigmentation**: {quiz_response.dark_spots_pigmentation}
-    - **Visible Pores**: {quiz_response.visible_pores}
-    - **Exfoliation Frequency**: {quiz_response.exfoliation_frequency}
-    - **Fine Lines & Wrinkles**: {quiz_response.fine_lines_wrinkles}
-    - **Dairy & Processed Food Intake**: {quiz_response.dairy_processed_food_intake}
-    - **Current Skincare Routine**: {quiz_response.skincare_routine}
-    """
+Primary Skin Concern: {quiz_response.primary_skin_concern}
 
-    # Construct improved AI prompt for better response structuring
+Skin Type: {quiz_response.skin_type}
+
+Breakout Frequency: {quiz_response.breakout_frequency}
+
+Reaction to Skincare: {quiz_response.reaction_to_skincare}
+
+Redness & Inflammation: {quiz_response.redness_inflammation}
+
+Sunscreen Usage: {quiz_response.sunscreen_usage}
+
+Skin Conditions: {quiz_response.skin_conditions}
+
+After Washing Skin Feel: {quiz_response.after_washing_skin_feel}
+
+Water Intake: {quiz_response.water_intake}
+
+Dark Spots & Pigmentation: {quiz_response.dark_spots_pigmentation}
+
+Visible Pores: {quiz_response.visible_pores}
+
+Exfoliation Frequency: {quiz_response.exfoliation_frequency}
+
+Fine Lines & Wrinkles: {quiz_response.fine_lines_wrinkles}
+
+Dairy & Processed Food Intake: {quiz_response.dairy_processed_food_intake}
+
+Current Skincare Routine: {quiz_response.skincare_routine}
+    """.strip()
+
     prompt = f"""
-    # **Comprehensive Skin Condition Report**
-    
-        ---
-    
-    ## **1. AI Diagnosis Summary**
-    <strong>AI-Detected Skin Conditions:</strong>
-    
-    {formatted_conditions}
-    
-    <strong>User-Provided Skin Description:</strong>  
-    {user_description if user_description.strip() else "<em>No user description provided.</em>"}
-    
-    <strong>User Skin Profile:</strong>  
-    {formatted_skin_profile}
-    
-    ---
-    
-    ## **2. Most Likely Condition & Severity Assessment**
-    - **Condition:** _(To be inferred from AI analysis & user description)_
-    - **Severity Rating:** _Mild / Moderate / Severe (based on AI assessment)_
-    
-    ## **3. Causes and Contributing Factors**
-    - 🔹 **UV Radiation Exposure:** Prolonged sun exposure without protection.
-    - 🔹 **Skin Type Sensitivity:** Certain skin types are more prone to irritation and hyperpigmentation.
-    - 🔹 **Hormonal Influence:** Conditions like acne and melasma may be triggered by hormonal changes.
-    - 🔹 **Lifestyle & Diet:** Processed foods, dairy intake, and hydration levels affect skin health.
-    
-    ## **4. Personalized Skincare Routine**
-    
-    **Morning Routine:**
-    1️⃣ <strong>Gentle Cleanser:</strong> Removes dirt & excess oil without stripping moisture.
-    2️⃣ <strong>Antioxidant Serum:</strong> Vitamin C to protect against environmental damage.
-    3️⃣ <strong>Broad-Spectrum Sunscreen (SPF 50+):</strong> Essential to prevent UV damage.
+BLOCK: SKIN ANALYSIS REPORT
+This report is structured similarly to a skincare routine report.
 
-    **Evening Routine:**
-    1️⃣ <strong>Gentle Cleanser:</strong> Removes makeup, pollutants, and excess oil.
-    2️⃣ <strong>(Optional) Gentle Exfoliant (1-2x per week):</strong> Low-percentage lactic acid for mild exfoliation.
-    3️⃣ <strong>Moisturizer:</strong> Hydrating and non-comedogenic to lock in moisture.
+BLOCK: AI-DETECTED SKIN CONDITIONS
+{formatted_conditions}
 
-    ## **5. Recommended Skincare Products (Brand-Neutral)**
-    🧴 <strong>Cleanser:</strong> Hydrating, fragrance-free options (e.g., Cerave, Cetaphil).  
-    💧 <strong>Moisturizer:</strong> Lightweight, oil-free hydration (e.g., Neutrogena Hydro Boost).  
-    🌞 <strong>Sunscreen:</strong> Mineral SPF 50+ (e.g., EltaMD, La Roche-Posay).  
+BLOCK: USER-PROVIDED DESCRIPTION
+{user_description if user_description.strip() else "No user description provided."}
 
-    ---
-    
-    ## **6. When to Seek Medical Advice**
-    ❗ <strong>Immediate consultation required if:</strong>
-    - The condition worsens or spreads rapidly.
-    - Any lesion changes shape, size, or starts bleeding.
-    - Skin irritation persists despite skincare adjustments.
+BLOCK: USER SKIN PROFILE
+{formatted_skin_profile}
 
-    <em>**Disclaimer:** This AI-generated report is for informational purposes only and should not be considered a substitute for professional medical advice.</em>
-    """
+BLOCK: MOST LIKELY CONDITION & SEVERITY
+Explain the likely condition and indicate severity (Mild, Moderate, or Severe).
 
-    # Generate AI response
+BLOCK: CAUSES AND CONTRIBUTING FACTORS
+List common factors such as UV exposure, skin sensitivity, hormonal changes, and diet.
+
+BLOCK: PERSONALIZED SKINCARE ROUTINE
+Provide detailed morning and evening routines.
+
+BLOCK: RECOMMENDED SKINCARE PRODUCTS
+Offer brand-neutral suggestions including key ingredients.
+
+BLOCK: WHEN TO SEEK MEDICAL ADVICE
+List red flags and indications for professional help.
+
+BLOCK: DISCLAIMER
+State that the report is informational and not a substitute for an in-person consultation.
+
+NOTE: For any word that contains two or more consecutive capital letters (e.g., "ABC" or "XYZ"), insert a newline before and after that word.
+    """.strip()
+
+    from google.generativeai import GenerativeModel
     model = GenerativeModel(
         model_name="gemini-2.0-flash",
         system_instruction=sys_instruct
     )
-    
+
     response = model.generate_content(
         prompt,
         generation_config={
             "temperature": 0.7,
-            "response_mime_type": "text/plain"  # Markdown-compatible response
+            "response_mime_type": "text/plain"
         }
     )
-    
-    return response.text
+
+    cleaned_text = clean_response(response.text)
+    return cleaned_text
 
 
 
 import markdown
-from ultralytics import YOLO
 
 def get_skin_diagnosis(model_path, image_path, user_description, skin_profile):
     """
     Generates a structured skin diagnosis report in HTML format.
-    
-    Args:
-        model_path (str): Path to the trained YOLO model.
-        image_path (str): Path to the input image for classification.
-        user_description (str): User-provided text describing skin concerns.
-        skin_profile (QuizResponse): User's detailed skin profile.
-
-    Returns:
-        str: HTML-formatted diagnosis report with key highlights.
     """
+
     # Load model
     model = load_model(model_path)
 
     # Get classification results
     top5_predictions = classify_image(model, image_path)
 
-    # Generate markdown report
+    # Generate structured report
     markdown_report = generate_skin_advice(top5_predictions, user_description, skin_profile)
 
-    # Convert markdown to HTML with strong emphasis on headers
-    html_report = markdown.markdown(markdown_report, extensions=["extra"])
+    # Convert to HTML while preserving line breaks
+    html_report = markdown.markdown(markdown_report, extensions=["extra", "nl2br"])
 
-    # Wrap report in strong tags for better emphasis
     formatted_html = f"""
     <div class="report-container">
-        <h2><strong>Skin Analysis Report</strong></h2>
-        <div class="report-content"><strong>{html_report}</strong></div>
+        <h2>Skin Analysis Report</h2>
+        <div class="report-content">{html_report}</div>
     </div>
     """
-    
+
     return formatted_html
 

@@ -10,7 +10,7 @@
   <style>
     /* Additional styles specific to the report output */
     .report-container {
-      max-width: 800px;
+      max-width: 80%;
       margin: 100px auto; /* provides spacing from the fixed header */
       padding: 20px;
       background: var(--card-bg); /* matches the card background in the dashboard theme */
@@ -18,16 +18,18 @@
       border-radius: 10px;
       color: var(--text-primary);
     }
-    .report-container h2 {
+    .report-header {
       margin-bottom: 20px;
+    }
+    .report-header h2 {
+      margin-bottom: 10px;
+    }
+    .report-header p {
+      margin: 5px 0;
     }
     .report-content {
       font-size: 1em;
       line-height: 1.6;
-    }
-    .report-content strong {
-      font-size: 1.2em;
-      color: var(--text-primary);
     }
     .upload-link {
       display: block;
@@ -41,9 +43,20 @@
 </head>
 <body>
   <div class="report-container">
-    <h2>Skin Analysis Report</h2>
-    <div class="report-content">{{ report|safe }}</div>
-    <a href="/" class="upload-link">Upload Another Image</a>
+    <div class="report-header">
+      <h2>Skin Analysis Report</h2>
+      {% if created_at %}
+      <p><strong>Date:</strong> {{ created_at }}</p>
+      {% endif %}
+      {% if patient %}
+      <p><strong>Patient:</strong> {{ patient }}</p>
+      {% endif %}
+    </div>
+    <div class="report-content">
+      {{ report|safe }}
+    </div>
+    <!-- Adjust the URL below to the correct upload route -->
+    <a href="{% url 'scan' %}" class="upload-link">Upload Another Image</a>
   </div>
 </body>
 </html>

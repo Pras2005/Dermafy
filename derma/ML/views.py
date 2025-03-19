@@ -15,6 +15,19 @@ import google.generativeai as genai
 from django.conf import settings
 import json
 
+def skin_diagnosis_view(request): # Recent change ronin
+    # Replace these with your actual logic to obtain the model path, image path, user description, and skin profile
+    model_path = "path/to/your/model.pt"
+    image_path = "path/to/uploaded/image.jpg"
+    user_description = request.POST.get("description", "")
+    skin_profile = ...  # Retrieve the QuizResponse or similar instance
+    
+    # Get the context for the report
+    context = get_skin_diagnosis(model_path, image_path, user_description, skin_profile)
+    
+    # Render the result.html template with the context
+    return render(request, "result.html", context)
+
 # ✅ Initialize Google Gemini API using the key from .env
 genai.configure(api_key=settings.GOOGLE_API_KEY)
 
