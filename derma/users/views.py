@@ -89,18 +89,12 @@ def submit_quiz(request):
 
     return render(request, "quiz_form.html")
 
-# Dashboard -RONIN
+
 @login_required
 def dashboard(request):
     user = request.user  # Now this will never be AnonymousUser
     reports = Report.objects.filter(user=user).order_by('-date')
-    skin_progress = SkinProgress.objects.filter(user=user).order_by('-date')
-
-    context = {
-        'reports': reports,
-        'skin_progress': skin_progress,
-    }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'dashboard.html', {"reports":reports})
 
 
 def consult(request):
@@ -217,5 +211,4 @@ def connect_google(request):
 
     return render(request, "connect_google.html")
 
-def scan(request):
-    return render(request,"scan.html")
+
