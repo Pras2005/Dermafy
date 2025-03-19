@@ -8,8 +8,9 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0003_report_skinprogress'),
+        ('users', '0004_remove_skinprogress_image_report_image'),
     ]
+
 
     operations = [
         migrations.CreateModel(

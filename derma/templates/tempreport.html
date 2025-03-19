@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Skin Analysis Report</title>
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
+</head>
+<body>
+    <div class="report-container">
+        <h2>Skin Analysis Report</h2>
+        <div class="report-content">
+            {{ report|safe }}
+        </div>
+        <a href="{% url 'scan' %}">Back to Scan</a>
+    </div>
+</body>
+</html>

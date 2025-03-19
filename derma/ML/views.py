@@ -9,8 +9,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from users.models import QuizResponse
 from .models import SkincareRoutine
-from .utils import generate_skincare_routine, scrape_products
-
+from .utils import generate_skincare_routine, scrape_products, get_skin_diagnosis
+import uuid
 import google.generativeai as genai
 from django.conf import settings
 import json
@@ -157,3 +157,39 @@ def skincare_report(request):
         return HttpResponse("<h1>Error:</h1><p>No skincare report found.</p>", status=404)
     except Exception as e:
         return HttpResponse(f"<h1>Unexpected Error:</h1><p>{str(e)}</p>", status=500)
+
+def save_uploaded_file(f): # -RONIN
+    """Save the uploaded file and return its path."""
+    file_name = f"{uuid.uuid4()}.jpg"
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+    with open(file_path, "wb+") as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return file_path
+
+def skin_scan_view(request): # RONIN
+    if request.method == "POST":
+        image_file = request.FILES.get("image")
+        user_description = request.POST.get("description", "")
+        body_part = request.POST.get("bodyPart", "")
+        
+        if not image_file:
+            return render(request, "upload.html", {"error": "Please upload an image."})
+        
+        # Save the image and get its file path
+        image_path = save_uploaded_file(image_file)
+        
+        # Create a dummy quiz response object; extend this if your form collects more data.
+        quiz_response = QuizResponse()
+        
+        # Define the path to your YOLO model (adjust as necessary)
+        model_path = os.path.join(settings.BASE_DIR, "path/to/yolo_model.pt")
+        
+        # Call the utility function to generate the HTML report
+        report_html = get_skin_diagnosis(model_path, image_path, user_description, quiz_response)
+        
+        # Render a report template (report.html) passing the report HTML
+        return render(request, "tempreport.html", {"report": report_html})
+    
+    # For GET requests, simply render the upload page
+    return render(request, "upload.html")

@@ -49,14 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Capture with camera
   captureCamera.addEventListener('click', function() {
-    // Animation effect
     this.classList.add('active');
     setTimeout(() => this.classList.remove('active'), 300);
     
-    // For a real application, you would implement camera access here
-    // using the MediaDevices.getUserMedia() API
-    
-    // Show a more engaging message
     Swal ? Swal.fire({
       title: 'Camera Access',
       text: 'In the full app, this would access your camera for a live scan.',
@@ -64,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
       confirmButtonColor: '#9c27b0'
     }) : alert('Camera functionality would be implemented here in a real application.');
     
-    // For demonstration, let's just show a placeholder with loading effect
     imagePreview.innerHTML = `
       <div style="text-align: center;">
         <div class="loading"><div></div><div></div></div>
@@ -79,11 +73,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // Scan button
-  scanButton.addEventListener('click', function() {
+  scanButton.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent any default form submission
     const bodyPart = document.getElementById('bodyPart').value;
     
     if (!bodyPart) {
-      // Subtle shake animation for error
       const select = document.getElementById('bodyPart');
       select.style.borderColor = 'var(--error)';
       select.style.animation = 'shake 0.5s ease';
@@ -102,18 +96,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (imagePreview.querySelector('img')) {
-      // Animation to show scanning in progress
       scanButton.disabled = true;
       scanButton.innerHTML = `
         <div class="loading"><div></div><div></div></div>
         <span>Analyzing...</span>
       `;
       
-      // Add scanning visual effect to the image
       const img = imagePreview.querySelector('img');
       img.style.filter = 'brightness(1.2) saturate(1.2)';
       
-      // Create scan line effect
       const scanLine = document.createElement('div');
       scanLine.style.position = 'absolute';
       scanLine.style.left = '0';
@@ -127,14 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
       imagePreview.style.position = 'relative';
       imagePreview.appendChild(scanLine);
       
-      // Add scan animation
       const style = document.createElement('style');
       style.innerHTML = `
         @keyframes scanMove {
           0% { top: 0; }
           100% { top: 100%; }
         }
-        
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
           25% { transform: translateX(-5px); }
@@ -153,21 +142,13 @@ document.addEventListener('DOMContentLoaded', function() {
           Scan Image
         `;
         
-        // Reset image filters
         img.style.filter = '';
-        
-        // Remove scan line
         if (scanLine.parentNode) {
           scanLine.parentNode.removeChild(scanLine);
         }
         
-        // Show success message
-        Swal ? Swal.fire({
-          title: 'Analysis Complete!',
-          text: 'Your skin scan has been successfully analyzed. View detailed results in your dashboard.',
-          icon: 'success',
-          confirmButtonColor: '#9c27b0'
-        }) : alert('Scan complete! View results in dashboard.');
+        // Instead of just showing an alert, submit the form to invoke get_skin_diagnosis
+        document.getElementById('skinScanForm').submit();
       }, 2000);
     } else {
       Swal ? Swal.fire({
@@ -182,10 +163,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Dashboard button
   dashboardButton.addEventListener('click', function() {
     window.location.href = '/dashboard/';
-    // Add button press effect
     this.style.transform = 'scale(0.95)';
     setTimeout(() => this.style.transform = '', 150);
-
     
     Swal ? Swal.fire({
       title: 'Redirecting',
@@ -194,13 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
       timer: 1500,
       timerProgressBar: true,
       showConfirmButton: false,
-      willOpen: () => {
-      Swal.showLoading();
-    }
+      willOpen: () => { Swal.showLoading(); }
     }) : alert('Redirecting to dashboard...');
-    
-    // In a real app, you would redirect to the dashboard page
-    // window.location.href = '/dashboard';
-
   });
 });
