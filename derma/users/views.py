@@ -102,12 +102,6 @@ def dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
-def reports(request):
-    all_reports = Report.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'reports.html', {'all_reports': all_reports})
-
-def skincare(request):
-    return render(request, 'skincare.html')
 
 def consult(request):
     return render(request, 'consult.html')

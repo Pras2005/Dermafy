@@ -14,27 +14,19 @@ from pathlib import Path
 import os
 import environ
 
-# ✅ Define BASE_DIR
+#  Define BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# ✅ Initialize environment
+#  Initialize environment
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# ✅ Load API Key
+#  Load API Key
 GOOGLE_API_KEY = env('GOOGLE_API_KEY', default=None)
 
 if not GOOGLE_API_KEY:
     raise Exception("GOOGLE_API_KEY not found in .env file.")
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-0ecs9r#9)*uym(%lgg3hws32#l%9j(d6jmx6kaqu)1esxk-$n#'
 

@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import markdown
 # Configure Google Gemini API
-genai.configure(api_key=settings.GEMINI_API_KEY)
+genai.configure(api_key=settings.GOOGLE_API_KEY)
 
 def generate_skincare_routine(quiz_response):
     sys_instruct = (

@@ -1,138 +1,4 @@
 {% load static %}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Skincare Routine</title>
-        <link rel="stylesheet" href="{% static 'css/skincare.css' %}">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <!-- REFERENCE 2-->
-        <div class="container">
-            <nav>
-                <h1>Your Skincare Routine</h1>
-                <form id="reportForm" method="POST" action="{% url 'generate_skincare_report' %}">
-                    {% csrf_token %}
-                    <button type="submit" id="generateReportBtn" class="btn-primary">Generate Skincare Report</button>
-                </form>
-                <a href="{% url 'dashboard' %}" id="dashboardLink" style="display:none;">
-                    <button id="dashboardBtn" class="btn-primary">Dashboard</button>
-                </a>
-            </nav>
-    
-            <div class="main-content">
-                <div class="routine-section" id="routineSection">
-                    <p class="date"><strong>Date:</strong> {{ created_at }}</p>
-    
-                    <h2>Routine Steps:</h2>
-                    <div class="routine-list">
-                        {% for routine in routines %}
-                        <div class="routine-step">
-                            <h3>{{ routine.step_title }}</h3>
-                            <p>{{ routine.description }}</p>
-                            <p><strong>Frequency:</strong> {{ routine.frequency }}</p>
-                        </div>
-                        {% empty %}
-                        <p>No routine steps found.</p>
-                        {% endfor %}
-                    </div>
-    
-                    <div class="routine-list">
-                        {% for step in routine %}
-                        <div class="routine-step">
-                            <h3>Step {{ step.step }}: {{ step.name }}</h3>
-                            <p><strong>Description:</strong> {{ step.description }}</p>
-                            <p><strong>Frequency:</strong> {{ step.frequency }}</p>
-                        </div>
-                        {% empty %}
-                        <p>No routine steps found.</p>
-                        {% endfor %}
-                    </div>
-    
-                    <h2>Recommended Products:</h2>
-                    <div class="product-list">
-                        {% for product in products %}
-                        <div class="product-item">
-                            <h3>{{ product.type }}</h3>
-                            <p><strong>Key Ingredients:</strong> {{ product.key_ingredients }}</p>
-                            <p><strong>Avoid:</strong> {{ product.avoid }}</p>
-                        </div>
-                        {% empty %}
-                        <p>No recommended products found.</p>
-                        {% endfor %}
-                    </div>
-                </div>
-    
-                <!-- Report Section (Initially Hidden) -->
-                <div class="report-section" id="reportSection" style="display:none;">
-                    <!-- Loading Spinner -->
-                    <div class="loading-spinner" id="loading-spinner">
-                        <svg class="spinner" viewBox="0 0 50 50" width="50" height="50">
-                            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-                        </svg>
-                        <p>Processing your skin data...</p>
-                    </div>
-    
-                    <div class="content-wrapper" id="content-wrapper" style="display:none;">
-                        <h2>Your Skincare Recommendations</h2>
-                        
-                        <!-- Recommendations Section -->
-                        <section class="recommendations">
-                            <div class="recommendation-tabs">
-                                <button class="tab-btn active" data-tab="routine">Routine</button>
-                                <button class="tab-btn" data-tab="products">Product Recommendations</button>
-                                <button class="tab-btn" data-tab="ingredients">Key Ingredients</button>
-                            </div>
-    
-                            <div class="tab-content">
-                                <!-- Routine Tab -->
-                                <div class="tab-pane active" id="routine">
-                                    <div class="routine-steps" id="routine-steps">
-                                        <p>{{ routine }}</p>
-                                    </div>
-                                </div>
-    
-                                <!-- Products Tab -->
-                                <div class="tab-pane" id="products">
-                                    <div class="product-recommendations" id="product-recommendations">
-                                        <p>{{ products }}</p>
-                                    </div>
-                                </div>
-    
-                                <!-- Ingredients Tab -->
-                                <div class="tab-pane" id="ingredients">
-                                    <div class="key-ingredients" id="key-ingredients">
-                                        <p>{{ ingredients }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-    
-                        <!-- AI Insight Section -->
-                        <section class="ai-insight">
-                            <h3>AI Analysis</h3>
-                            <div class="insight-content" id="ai-insight-content">
-                                <p>{{ analysis }}</p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <script src="{% static 'js/skincare.js' %}"></script>
-    </body>
-    </html>
-
-
-
-
-<!--
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,59 +6,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Skincare Routine</title>
     <link rel="stylesheet" href="{% static 'css/skincare.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <nav>
-            <a href="{% url 'skincare_report' %}">
-                <button>View Skincare Report</button>
+            <h1>Your Skincare Routine</h1>
+            <form id="reportForm" method="POST" action="{% url 'skincare' %}">
+                {% csrf_token %}
+                <button type="submit" id="generateReportBtn" class="btn-primary">Generate Skincare Report</button>
+            </form>
+            <a href="{% url 'dashboard' %}" id="dashboardLink" style="display:none;">
+                <button id="dashboardBtn" class="btn-primary">Dashboard</button>
             </a>
         </nav>
 
-        <h1>Your Skincare Routine</h1>
-        <p><strong>Date:</strong> {{ created_at }}</p>
+        <div class="main-content">
+            <div class="routine-section" id="routineSection">
+                <p class="date"><strong>Date:</strong> {{ skincare_data.created_at }}</p>
 
-        <h2>Routine Steps:</h2>
-        {% for routine in routines %}
-        <div class="routine-step">
-            <h3>{{ routine.step_title }}</h3>
-            <p>{{ routine.description }}</p>
-            <p><strong>Frequency:</strong> {{ routine.frequency }}</p>
-        </div>
-        {% empty %}
-        <p>No routine steps found.</p>
-        {% endfor %}
+                <h2>Routine Steps:</h2>
+                <div class="routine-list">
+                    {% for step in skincare_data.routine %}
+                    <div class="routine-step">
+                        <h3>Step {{ step.step }}: {{ step.name }}</h3>
+                        <p><strong>Description:</strong> {{ step.description }}</p>
+                        <p><strong>Frequency:</strong> {{ step.frequency }}</p>
+                    </div>
+                    {% empty %}
+                    <p>No routine steps found.</p>
+                    {% endfor %}
+                </div>
 
-        <div class="routine-list">
-            {% for step in routine %}
-            <div class="routine-step">
-                <h3>Step {{ step.step }}: {{ step.name }}</h3>
-                <p><strong>Description:</strong> {{ step.description }}</p>
-                <p><strong>Frequency:</strong> {{ step.frequency }}</p>
+                <h2>Recommended Products:</h2>
+                <div class="product-list">
+                    {% for product in skincare_data.recommended_products %}
+                    <div class="product-item">
+                        <h3>{{ product.type }}</h3>
+                        <p><strong>Key Ingredients:</strong> {{ product.key_ingredients }}</p>
+                        <p><strong>Avoid:</strong> {{ product.avoid }}</p>
+                    </div>
+                    {% empty %}
+                    <p>No recommended products found.</p>
+                    {% endfor %}
+                </div>
             </div>
-            {% empty %}
-            <p>No routine steps found.</p>
-            {% endfor %}
-        </div>
 
-        <h2>Recommended Products:</h2>
-        <div class="product-list">
-            {% for product in products %}
-            <div class="product-item">
-                <h3>{{ product.type }}</h3>
-                <p><strong>Key Ingredients:</strong> {{ product.key_ingredients }}</p>
-                <p><strong>Avoid:</strong> {{ product.avoid }}</p>
+            <!-- Report Section (Initially Hidden) -->
+            <div class="report-section" id="reportSection" style="display:none;">
+                <!-- Loading Spinner -->
+                <div class="loading-spinner" id="loading-spinner">
+                    <svg class="spinner" viewBox="0 0 50 50" width="50" height="50">
+                        <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                    </svg>
+                    <p>Processing your skin data...</p>
+                </div>
+
+                <div class="content-wrapper" id="content-wrapper" style="display:none;">
+                    <h2>Your Skincare Recommendations</h2>
+                    
+                    <!-- Recommendations Section -->
+                    <section class="recommendations">
+                        <div class="recommendation-tabs">
+                            <button class="tab-btn active" data-tab="routine">Routine</button>
+                            <button class="tab-btn" data-tab="products">Product Recommendations</button>
+                            <button class="tab-btn" data-tab="ingredients">Key Ingredients</button>
+                        </div>
+
+                        <div class="tab-content">
+                            <!-- Routine Tab -->
+                            <div class="tab-pane active" id="routine">
+                                <div class="routine-steps" id="routine-steps">
+                                    <p>{{ skincare_data.routine }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Products Tab -->
+                            <div class="tab-pane" id="products">
+                                <div class="product-recommendations" id="product-recommendations">
+                                    <p>{{ skincare_data.recommended_products }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Ingredients Tab -->
+                            <div class="tab-pane" id="ingredients">
+                                <div class="key-ingredients" id="key-ingredients">
+                                    <p>{{ skincare_data.ingredients }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- AI Insight Section -->
+                    <section class="ai-insight">
+                        <h3>AI Analysis</h3>
+                        <div class="insight-content" id="ai-insight-content">
+                            <p>{{ skincare_data.analysis }}</p>
+                        </div>
+                    </section>
+                </div>
             </div>
-            {% empty %}
-            <p>No recommended products found.</p>
-            {% endfor %}
         </div>
-
-        <form method="POST" action="{% url 'generate_skincare_report' %}">
-            {% csrf_token %}
-            <button type="submit">Generate Skincare Report</button>
-        </form>
     </div>
+
+    <script src="{% static 'js/skincare.js' %}"></script>
 </body>
 </html>
--->
+

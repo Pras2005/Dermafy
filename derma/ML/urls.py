@@ -4,8 +4,10 @@ from .views import *
 urlpatterns = [
         path('skincare/',get_skincare,name="get_skincare"),
         path('report',scan_img,name='scan'),
-    # Add other paths here
-        path('skincare/', skincare, name='skincare'),
-        path('skincare_report/', skincare_report, name='skincare_report'),
-        path('generate_skincare_report/', get_skincare, name='generate_skincare_report'),
-    ]
+        path('skincare_list/', skincare_list, name='skincare'),
+        path('show_skincare/<int:pk>',show_skincare,name="show_skincare"),
+        path('reports/', report_list, name='report_list'),  
+        path('reports/<int:pk>/', show_report, name='show_report'),  
+        path('reports/<int:pk>/download/', download_report, name='download_report'),  
+
+            ]

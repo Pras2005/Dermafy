@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 from django.conf import settings
-
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+import os
 
 class CUSTOMUSER(AbstractUser):
     phone_no = models.CharField(max_length =13,blank=True,null =True)
@@ -76,7 +80,8 @@ class Report(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
     details = models.TextField()
     image = models.ImageField(upload_to="progress_images/",null =True,blank=True)
-
+    title = models.TextField(null=True,blank=True)
+    severity= models.DecimalField(null =True,blank=True,max_digits=4, decimal_places=4)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):

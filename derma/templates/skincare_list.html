@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skincare Routines</title>
+    <link rel="stylesheet" href="{% static 'css/skincare.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <h1>Your Skincare Routines</h1>
+            <a href="{% url 'get_skincare' %}">
+                <button class="btn-primary">generate skincare routine</button>
+            </a>
+        </nav>
+        
+        <div class="main-content">
+            <h2>Saved Routines</h2>
+            
+            {% if routines %}
+                <ul class="routine-list">
+                    {% for routine in routines %}
+                        <li class="routine-item">
+                            <h3>{{ routine.created_at|date:"Y-m-d H:i:s" }}</h3>
+                            <p><strong>Steps:</strong> {{ routine.routine|length }}</p>
+                            <a href="{% url 'show_skincare' routine.pk %}" class="btn-secondary">View Details</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No skincare routines found. Generate a new routine.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
