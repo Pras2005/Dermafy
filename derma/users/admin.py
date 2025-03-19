@@ -5,4 +5,5 @@ from .models import *
 
 admin.site.register(CUSTOMUSER)
 admin.site.register(QuizResponse)
+admin.site.register(Report)
 # Register your models here.
