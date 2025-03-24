@@ -196,25 +196,3 @@ function closeModal() {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto'; // Restore scrolling
 }
-
-// Download report (mock function)
-function downloadReport(report) {
-    // In a real application, this would generate and download a PDF
-    alert(`Downloading report for ${report.condition} dated ${report.date}`);
-}
-
-// In a real application, you would have a function to fetch data from your backend
-function fetchReportsFromDatabase() {
-    // Example fetch call:
-    // fetch('/api/user/reports')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     loadingElement.style.display = 'none';
-    //     reportsContainer.style.display = 'grid';
-    //     renderReports(data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching reports:', error);
-    //     loadingElement.style.display = 'none';
-    //   });
-}

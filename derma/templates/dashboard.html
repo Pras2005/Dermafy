@@ -6,6 +6,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DermaNova Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        /* Additional styling to handle sidebar toggle and report cards */
+        body {
+            transition: margin-left 0.3s ease;
+        }
+        
+        /* Fix for the menu toggle position */
+        .header {
+            position: fixed;
+            width: 100%;
+            z-index: 101; /* Higher than sidebar */
+            transition: margin-left 0.3s ease;
+        }
+        
+        body.sidebar-active .main-content {
+            margin-left: 250px; /* Width of the sidebar */
+        }
+        
+        /* Keep header in place when sidebar opens */
+        body.sidebar-active .header {
+            margin-left: 0; /* Keep header in place */
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 100;
+            top: 0;
+            padding-top: 60px; /* Space for fixed header */
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .main-content {
+            transition: margin-left 0.3s ease;
+            width: 100%;
+            padding-top: 60px; /* Space for fixed header */
+        }
+        
+        .main-content.shifted {
+            margin-left: 250px;
+        }
+        
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        /* Report card styling with rounded corners and shadow */
+        .report-card {
+            border-radius: 12px;
+            overflow: hidden;
+            /* Keep original background (not enforcing white) */
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), 0 4px 12px rgba(255, 255, 255, 0.3), 0 1px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 8px 16px rgba(255, 255, 255, 0.4), 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Smaller image container */
+        .report-image {
+            height: 160px;
+            overflow: hidden;
+            position: relative;
+            /* Not explicitly setting background color, using original */
+        }
+        
+        .report-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .no-image {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+        
+        .report-details {
+            padding: 16px;
+        }
+        
+        .report-title {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #666;
+        }
+        
+        .report-summary {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #444;
+            margin-bottom: 12px;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-view, .btn-download {
+            padding: 8px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .btn-view {
+            background-color: #4CAF50;
+            color: white;
+            text-decoration:none;
+        }
+        
+        .btn-download {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .btn-view:hover, .btn-download:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title a {
+            font-size: 14px;
+            font-weight: normal;
+            text-decoration: none;
+            color: #2196F3;
+            transition: color 0.2s ease;
+        }
+        
+        .section-title a:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body.sidebar-active .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                width: 100%;
+            }
+            
+            .main-content.shifted {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="top-section"></div>
@@ -54,7 +240,7 @@
             <i>📝</i> Reports
         </a>
         <a href="{% url 'consult' %}" class="sidebar-link">
-            <i>👨⚕️</i> Consult
+            <i>⚕️</i> Consult
         </a>
         <a href="{% url 'submit_quiz' %}" class="sidebar-link">
             <i>📋</i> Retake Quiz
@@ -62,22 +248,22 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" id="main-content">
         <div class="dashboard-header">
-            <h1>Welcome back, {{ user.first_name|default:user.username }}!</h1>
+            <h1>Welcome, {{ user.first_name|default:user.username }}!</h1>
             <p>Here's your skin health overview.</p>
         </div>
 
         <!-- Latest Report Section -->
         <section class="latest-report">
-            <h2 class="section-title">
-                Latest Report
-                <a href="{% url 'report_list' %}">View All Reports</a>
-            </h2>
+             <h2 class="section-title">
+                Latest Reports
+                <a href="{% url 'report_list' %}" class='btn-view' style='background:linear-gradient(135deg, rgb(63 32 175), rgb(4 2 44));color:#fff'>View All Reports</a>
+            </h2> 
 
             {% if reports %}
                 <div class="report-grid">
-                    {% for report in reports %}
+                    {% for report in reports|slice:":4" %}
                         <div class="report-card">
                             <div class="report-image">
                                 {% if report.image %}
@@ -94,7 +280,7 @@
                                         Severity: <b>{{ report.severity|default:"N/A" }}</b>
                                     </span>
                                 </div>
-                                <p class="report-summary">{{ report.details|truncatechars:150 }}</p>
+                                <p class="report-summary">{{ report.details|truncatechars:100 }}</p>
                                 
                                 <div class="report-actions">
                                     <a href="{% url 'show_report' report.pk %}" class="btn-view">View Report</a>
@@ -104,6 +290,12 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if reports.count > 4 %}
+                <div class="more-reports" style="text-align: center; margin-top: 20px;">
+                    <p>{{ reports.count|add:"-4" }} more report{{ reports.count|add:"-4"|pluralize }} available.</p>
+                    <a href="{% url 'report_list' %}" class="btn-view" style="display: inline-block; margin-top: 8px;">View All Reports</a>
+                </div>
+                {% endif %}
             {% else %}
                 <div class="empty-container">
                     <p>No reports available.</p>
@@ -112,7 +304,35 @@
         </section>
     </main>
 
-    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle sidebar
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const body = document.body;
+            
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                mainContent.classList.toggle('shifted');
+                body.classList.toggle('sidebar-active');
+            });
+            
+            // User dropdown toggle
+            const userProfile = document.getElementById('user-profile');
+            const userDropdown = document.getElementById('user-dropdown');
+            
+            userProfile.addEventListener('click', function() {
+                userDropdown.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userProfile.contains(event.target)) {
+                    userDropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
