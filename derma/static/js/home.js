@@ -63,3 +63,36 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("videoFrame").src = "dermatologist_tips.mp4";
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if user has moved past landing page
+    const hasVisitedLanding = localStorage.getItem('hasVisitedLanding');
+
+    // If this is the landing page, mark that user has visited it
+    if (window.location.pathname.includes('landing'),  
+        window.location.pathname === '/'  ,
+        window.location.pathname === '/index.html') {
+        localStorage.setItem('hasVisitedLanding', 'true');
+    } 
+    // For any other page, check if they've visited landing and load consult
+    else if (hasVisitedLanding === 'true') {
+        loadConsultScript();
+    }
+
+    function loadConsultScript() {
+        console.log("Loading consult script...");
+        // Create script element
+        var script = document.createElement("script");
+        script.src = "{% static 'js/consult.js' %}";
+        script.async = true;
+        script.defer = true;
+
+        // Append to document head
+        if (document.head) {
+            document.head.appendChild(script);
+            console.log("Consult script loaded successfully!");
+        } else {
+            console.error("document.head is not found!");
+        }
+    }
+});

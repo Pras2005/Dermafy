@@ -2,45 +2,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DermAI - Your Reports</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/reports.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DermaNova - Your Reports</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <!-- Use the new styling -->
+  <link rel="stylesheet" href="{% static 'css/reports.css' %}">
 </head>
-<body class="bg-gray-900 text-white">
-    <header class="bg-gray-800 border-b border-gray-700 py-6">
-        <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-bold text-purple-400">DermAI Reports</h1>
-            <p class="text-gray-400 mt-1">Your personal skin condition analysis history</p>
+<body>
+  <header>
+    <div class="container mx-auto px-4">
+      <h1 class="text-3xl font-bold text-purple-400">DermaNova Reports</h1>
+      <p class="text-gray-400 mt-1">Your personal skin condition analysis history</p>
+    </div>
+  </header>
+  <main class="container mx-auto px-4 py-8">
+    <!-- Reports Listing -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for report in reports %}
+      <div class="card bg-gray-800 border border-gray-700 p-5 rounded-lg">
+        <h3 class="text-xl font-semibold text-purple-400">{{ report.title }}</h3>
+        <p class="text-gray-400 mt-2"><strong>Severity:</strong> {{ report.severity|default:"N/A" }}</p>
+        <p class="text-gray-400"><strong>Date:</strong> {{ report.date }}</p>
+        
+        <div class="mt-4 flex gap-3">
+          <a href="{% url 'show_report' report.pk %}" class="preview-btn">
+            View Report
+          </a>
+          <a href="{% url 'download_report' report.pk %}" class="download-btn" style='padding 3px 12px;'>
+            Download PDF
+          </a>
         </div>
-    </header>
-    
-    <main class="container mx-auto px-4 py-8">
-        <!-- Reports Listing -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for report in reports %}
-            <div class="bg-gray-800 border border-gray-700 p-5 rounded-lg">
-                <h3 class="text-xl font-semibold text-purple-400">{{ report.title }}</h3>
-                <p class="text-gray-400 mt-2"><strong>Severity:</strong> {{ report.severity|default:"N/A" }}</p>
-                <p class="text-gray-400"><strong>Date:</strong> {{ report.date }}</p>
-                
-                <div class="mt-4 flex gap-3">
-                    <a href="{% url 'show_report' report.pk %}" class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700">
-                        View Report
-                    </a>
-                    <a href="{% url 'download_report' report.pk %}" class="px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700">
-                        Download PDF
-                    </a>
-                </div>
-            </div>
-            {% empty %}
-            <p class="text-gray-400 col-span-3 text-center">No reports found.</p>
-            {% endfor %}
-        </div>
-    </main>
-
-    <script src="{% static 'js/reports.js' %}"></script>
+      </div>
+      {% empty %}
+      <p class="text-gray-400 col-span-3 text-center">No reports found.</p>
+      {% endfor %}
+    </div>
+  </main>
+  <!-- Optional JS for any client-side interaction -->
+  <script src="{% static 'js/reports.js' %}"></script>
 </body>
 </html>
-

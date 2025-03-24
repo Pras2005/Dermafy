@@ -1,8 +1,11 @@
+/* Fix the background to display properly */
 body {
-    background-color: #111827;
+    background: url('../images/bg_flow1.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: #f3f4f6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 .card {
     transition: transform 0.2s, box-shadow 0.2s;
@@ -24,7 +27,12 @@ body {
     z-index: 50;
     overflow-y: auto;
 }
-
+/* .container{
+    background-color: black;
+} */
+ .header{
+    background-color: black;
+ }
 .modal-content {
     background-color: #1f2937;
     border-radius: 0.5rem;
@@ -75,8 +83,13 @@ body {
 }
 
 .preview-btn {
-    background-color: #374151;
-    color: #c4b5fd;
+    background-color: #b6c4da;
+    color: #b9b5c9;
+    border-radius: 10px;
+    padding: 10px 20px !important; /* Increase padding */
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
 }
 
 .preview-btn:hover {
@@ -84,9 +97,16 @@ body {
 }
 
 .download-btn {
-    background-color: #5b21b6;
+    all: unset;  /* Reset all default styles */
+    background-color: #552f93;
     color: white;
+    border-radius: 10px;
+    padding: 10px 20px !important; /* Increase padding */
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
 }
+
 
 .download-btn:hover {
     background-color: #6d28d9;
@@ -104,4 +124,97 @@ body {
     border: 1px solid #374151;
     color: #9ca3af;
     margin: 2rem 0;
+}
+
+/* Container background with opacity and dark purple theme */
+/* Reduce container opacity to let background peek through */
+.container {
+    background-color: rgba(0, 0, 0, 0.7); /* Reduced opacity */
+    border: 1px solid #6b21a8;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Match modal content to dark purple theme */
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.7); /* Deep black with opacity */
+    border: 1px solid #7c3aed;
+}
+
+/* Adjust report cards for dark purple theme */
+.card {
+    background-color: rgba(23, 23, 36, 0.7); /* No gray, only dark shade */
+    border: 1px solid #6d28d9;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(91, 33, 182, 0.5);
+}
+
+/* Empty state without gray tone */
+.empty-state {
+    background-color: rgba(17, 16, 39, 0.65);
+    border: 1px solid #6b21a8;
+}
+
+/* Buttons with dark purple hover effect */
+.preview-btn {
+    background-color: #4c1d95;
+    color: #c4b5fd;
+}
+
+.preview-btn:hover {
+    background-color: #5b21b6;
+}
+
+/* .download-btn {
+    background-color: #6b21a8;
+    color: white;
+    
+}
+
+.download-btn:hover {
+    background-color: #7c3aed;
+} */
+/* Header with semi-transparent dark purple-black background */
+header {
+    background-color: rgba(12, 10, 35, 0.7); /* Dark shade with 70% opacity */
+    border-bottom: 1px solid rgba(124, 58, 237, 0.7); /* Dark purple border with slight opacity */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Center header content */
+header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: transparent; /* No additional background inside */
+}
+
+/* Header text with shadow for visibility */
+header h1, header p {
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6); /* Slight shadow for better readability */
+}
+
+/* Change date input text color to white */
+input[type="date"] {
+    color: white;
+    background-color: rgba(17, 16, 39, 0.6); /* Optional: Dark background to match theme */
+    border: 1px solid #6b21a8;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+/* Optional: Change placeholder color to light gray */
+input[type="date"]::placeholder {
+    color: #9ca3af;
 }

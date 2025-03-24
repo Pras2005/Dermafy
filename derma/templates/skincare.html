@@ -14,13 +14,13 @@
     <div class="container">
         <nav>
             <h1>Your Skincare Routine</h1>
-            <form id="reportForm" method="POST" action="{% url 'skincare' %}">
-                {% csrf_token %}
-                <button type="submit" id="generateReportBtn" class="btn-primary">Generate Skincare Report</button>
-            </form>
-            <a href="{% url 'dashboard' %}" id="dashboardLink" style="display:none;">
-                <button id="dashboardBtn" class="btn-primary">Dashboard</button>
-            </a>
+              {% comment %} <form id="reportForm" method="POST" action="{% url 'dashboard' %}">
+                
+                <button type="submit" id="generateReportBtn" class="btn-primary">Dashboard</button> {% endcomment %}
+                <a href="{% url 'dashboard' %}" id="dashboardLink" style="display:none;">
+                    <button id="dashboardBtn" class="btn-primary">Dashboard</button>
+                </a> 
+            </form> 
         </nav>
 
         <div class="main-content">
