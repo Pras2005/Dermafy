@@ -24,7 +24,8 @@ genai.configure(api_key=settings.GOOGLE_API_KEY)
 @login_required
 def get_skincare(request):
     
-    quiz_response = get_object_or_404(QuizResponse, user=request.user)
+
+    quiz_response = QuizResponse.objects.filter(user=request.user).order_by('-submitted_at').first()
     response = generate_skincare_routine(quiz_response)
     skincare_routine = SkincareRoutine.objects.create(
         user=request.user,
