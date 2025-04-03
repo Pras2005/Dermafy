@@ -189,4 +189,15 @@ SOCIALACCOUNT_AUTO_SIGNUP = False  # Prevents unwanted automatic signup via OAut
 LOGIN_REDIRECT_URL = "/dashboard/"
 
 ACCOUNT_SIGNUP_REDIRECT_URL = "/submit_quiz/"
-SOCIALACCOUNT_LOGIN_ON_GET = True 
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+
+
+#cookies setting for mobile app login 
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week session persistence
+SESSION_COOKIE_HTTPONLY = False  # Allow JavaScript to access it
+SESSION_COOKIE_SECURE = False  # Set to True in production
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
