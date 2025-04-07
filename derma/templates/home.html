@@ -5,10 +5,8 @@
       <!-- basic -->
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- mobile metas -->
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
       <!-- site metas -->
       <title>DermaNova</title>
       <meta name="keywords" content="">
@@ -32,47 +30,307 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 
       <style>
-         #login-btn a:hover {
-           color: #9370DB; /* Purple color on hover */
+         /* Login button styles - made more prominent */
+         #login-btn {
+            padding: 10px 20px;
+            background-color: rgba(147, 112, 219, 0.8);
+            border-radius: 30px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-right: 30px;
          }
-       </style>
+         
+         #login-btn a {
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+         }
+         
+         #login-btn:hover {
+            background-color: #9370DB;
+            transform: scale(1.05);
+         }
+         
+         /* Universal resets for better mobile experience */
+         * {
+            box-sizing: border-box;
+         }
+         
+         img {
+            max-width: 100%;
+            height: auto;
+         }
+         
+         /* CRITICAL FIX FOR VIDEO VISIBILITY ON MOBILE */
+         /* This completely replaces the previous video container styles */
+         .video-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 20px 0;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            position: relative;
+            /* Remove absolute positioning issues */
+            padding-bottom: 0;
+            height: auto;
+            min-height: 200px;
+            overflow: visible;
+            display: block;
+            /* Ensure highest z-index */
+            z-index: 9999;
+         }
+         
+         /* Make video directly visible without absolute positioning */
+         .video-container video {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            display: block !important;
+            position: relative;
+            /* Force visibility */
+            visibility: visible !important;
+            opacity: 1 !important;
+            object-fit: contain;
+            background-color: #000;
+            /* Ensure any containing elements don't clip */
+            z-index: 9999;
+         }
+         
+         /* Center header content */
+         .header_section .main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            flex-wrap: wrap;
+         }
+         
+         /* Fix for banner section */
+         .banner_section {
+            padding: 30px 0;
+         }
+         
+         .carousel-inner {
+            position: relative;
+         }
+         
+         .carousel-item {
+            display: none;
+         }
+         
+         .carousel-item.active {
+            display: block;
+         }
+         
+         /* Added animation for carousel */
+         @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+         }
+         
+         .carousel-item.active {
+            animation: fadeIn 1s;
+         }
+         
+         /* Doctors section fix - CRITICAL for video visibility */
+         .doctors_section {
+            position: relative;
+            /* Changed from relative to static to avoid positioning conflicts */
+            z-index: auto;
+            overflow: visible !important;
+         }
+         
+         .doctors_section .taital_left {
+            overflow: visible !important;
+         }
+         
+         .taital_right {
+            margin-bottom: 20px;
+         }
+         
+         /* Enhanced mobile responsiveness */
+         @media (max-width: 991px) {
+            .banner_taital {
+               font-size: 28px;
+               margin-bottom: 15px;
+            }
+            
+            .banner_img {
+               text-align: center;
+               margin-top: 20px;
+            }
+            
+            .carousel-control-prev, .carousel-control-next {
+               display: none;
+            }
+            
+            .col-md-6 {
+               margin-bottom: 20px;
+            }
+            
+            /* CRITICAL VIDEO FIX FOR TABLETS */
+            .video-container {
+               min-height: 300px;
+               width: 100% !important;
+               display: block !important;
+            }
+         }
+         
+         @media (max-width: 767px) {
+            /* Header and navigation */
+            .header_section .main {
+               justify-content: center;
+               text-align: center;
+            }
+            
+            .logo {
+               margin-bottom: 15px;
+            }
+            
+            #login-btn {
+               margin: 10px auto;
+               display: block;
+               width: 120px;
+               text-align: center;
+            }
+            
+            /* Banner section */
+            .banner_taital {
+               font-size: 24px;
+               margin-bottom: 20px;
+               padding: 0 15px;
+               text-align: center;
+            }
+            
+            .banner_img {
+               text-align: center;
+               margin: 0 auto 20px;
+               max-width: 300px;
+            }
+            
+            /* Text sections */
+            .protect_taital, .about_taital, .doctor_taital {
+               font-size: 22px;
+               text-align: center;
+               margin-bottom: 20px;
+            }
+            
+            .hands_text, .hands_text_2 {
+               font-size: 16px;
+               margin-bottom: 15px;
+            }
+            
+            .about_text {
+               font-size: 16px;
+               padding: 0 15px;
+               text-align: center;
+            }
+            
+            /* Images */
+            .image_2, .about_img {
+               text-align: center;
+               margin: 0 auto 20px;
+               max-width: 300px;
+            }
+            
+            /* CRITICAL VIDEO FIX FOR MOBILE PHONES */
+            .video-container {
+               display: block !important;
+               width: 100% !important;
+               min-height: 200px;
+               margin: 20px auto !important;
+               position: relative !important;
+               z-index: 9999 !important;
+               overflow: visible !important;
+            }
+            
+            /* Ensure video is visible in mobile */
+            .video-container video {
+               display: block !important;
+               visibility: visible !important;
+               position: relative !important;
+               width: 100% !important;
+               height: auto !important;
+               max-height: 300px !important;
+               z-index: 9999 !important;
+            }
+            
+            /* Remove any potentially conflicting styles */
+            .taital_left, .taital_right {
+               position: static !important;
+               overflow: visible !important;
+            }
+         }
+         
+         /* Small phone optimizations */
+         @media (max-width: 480px) {
+            .banner_taital {
+               font-size: 20px;
+            }
+            
+            .protect_taital, .about_taital, .doctor_taital {
+               font-size: 20px;
+            }
+            
+            .hands_text, .hands_text_2 {
+               font-size: 14px;
+            }
+            
+            .about_text {
+               font-size: 14px;
+            }
+            
+            .banner_section {
+               padding: 20px 0;
+            }
+            
+            .protect_section, .about_section, .doctors_section {
+               padding: 30px 0;
+            }
+            
+            /* EXTRA SECURITY FOR TINY SCREENS */
+            .video-container {
+               width: 100% !important;
+               min-height: 180px;
+            }
+            
+            .video-container video {
+               max-height: 250px !important;
+            }
+         }
+      </style>
    </head>
    <body>
       <!--header section start -->
       <div class="header_section">
          <div class="container-fluid">
-               <div class="main">
-                  <div class="logo"><a href=""><img width="60px" height="30px" style="border-radius: 20px; padding-left: 10px;" src="{% static 'images/icon.png' %}"></a></div>
-                  <div class="menu_text">
-                     <ul>
-                        <div class="togle_">
-                           <div class="menu_main">
-                              <ul>
-                                 <li id="auth-container">
-                                       <div id="login-btn" style="position: absolute; right: 30px; top: 35px;">
-                                          <a href="{% url "user_login" %}" style="font-weight: bold; color: white; text-decoration: none; transition: color 0.3s ease;">
-                                            Login
-                                          </a>
-                                       </div>
-                                   </li>
-                              </ul>
-                           </div>
-                        </div>
-                     </ul>
-                  </div>
+            <div class="main">
+               <div class="logo"><a href=""><img width="60px" height="30px" style="border-radius: 20px; padding-left: 10px;" src="{% static 'images/icon.png' %}"></a></div>
+               
+               <!-- Login button -->
+               <div id="login-btn">
+                  <a href="{% url 'user_login' %}">Login</a>
                </div>
             </div>
+         </div>
+      </div>
+      <!-- header section end -->
+      
       <!-- banner section start -->
       <div class="banner_section layout_padding">
          <div class="container">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
                      <div class="row">
                         <div class="col-md-6">
                            <div class="container">
-                              <h1 class="banner_taital">Your Skin,   Our Priority:    Welcome to DermaNova</h1>
+                              <h1 class="banner_taital">Your Skin, Our Priority: Welcome to DermaNova</h1>
                            </div>
                         </div>
                         <div class="col-md-6">
-                           <div class="banner_img"><img src="{% static 'images/Banner4.jpg' %}"></div>
+                           <div class="banner_img"><img src="{% static 'images/Banner4.jpg' %}" alt="DermaNova Banner"></div>
                         </div>
                      </div>
                   </div>
@@ -84,7 +342,7 @@
                            </div>
                         </div>
                         <div class="col-md-6">
-                           <div class="banner_img" style="border-radius: 20px;"><img src="{% static 'images/Banner2.jpg' %}"></div>
+                           <div class="banner_img"><img src="{% static 'images/Banner2.jpg' %}" alt="AI-Powered Solutions"></div>
                         </div>
                      </div>
                   </div>
@@ -96,12 +354,24 @@
                            </div>
                         </div>
                         <div class="col-md-6">
-                           <div class="banner_img"><img src="{% static 'images/Banner7.jpg' %}"></div>
+                           <div class="banner_img"><img src="{% static 'images/Banner7.jpg' %}" alt="Healthy Skin"></div>
                         </div>
                      </div>
                   </div>
                </div>
+               <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+               </a>
+               <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+               </a>
+            </div>
+         </div>
+      </div>
       <!-- banner section end -->
+      
       <!-- protect section start -->
       <div class="protect_section layout_padding">
          <div class="container">
@@ -113,24 +383,25 @@
             <div class="protect_section_2 layout_padding">
                <div class="row">
                   <div class="col-md-6">
-                     <h1 class="hands_text"><a href=>Keep Your Skin Clean Gently cleanse daily to remove bacteria.</a></h1>
-                     <h1 class="hands_text_2"><a href=>Use Sunscreen Daily UV rays can trigger skin diseases.</a></h1>
-                     <h1 class="hands_text"><a href=>Don’t Ignore Early Signs Redness, peeling could indicate an infection.</a></h1>
+                     <h1 class="hands_text"><a href="#">Keep Your Skin Clean Gently cleanse daily to remove bacteria.</a></h1>
+                     <h1 class="hands_text_2"><a href="#">Use Sunscreen Daily UV rays can trigger skin diseases.</a></h1>
+                     <h1 class="hands_text"><a href="#">Don't Ignore Early Signs Redness, peeling could indicate an infection.</a></h1>
                   </div>
                   <div class="col-md-6">
-                     <div class="image_2"><img src="{% static 'images/DermaDoc.jpg' %}"></div>
+                     <div class="image_2"><img src="{% static 'images/DermaDoc.jpg' %}" alt="Derma Doctor" class="img-fluid"></div>
                   </div>
                </div>
             </div>
          </div>
       </div>
       <!-- protect section end -->
+      
       <!-- about section start -->
       <div class="about_section layout_padding">
          <div class="container">
             <div class="row">
                <div class="col-md-6">
-                  <div class="about_img"><img width="500px" height="400px" src="{% static 'images/new_dermanova.jpg' %}"></div>
+                  <div class="about_img"><img src="{% static 'images/new_dermanova.jpg' %}" alt="About DermaNova" class="img-fluid"></div>
                </div>
                <div class="col-md-6">
                   <h1 class="about_taital">What is DermaNova?</h1>
@@ -141,26 +412,178 @@
          </div>
       </div>
       <!-- about section end -->
+      
       <!-- doctor section start -->
       <div class="doctors_section layout_padding">
-         <div class="container-fluid">
+         <div class="container">
             <div class="row">
                <div class="col-sm-12">
-                  <div class="taital_left">
-                    <div class="taital_right">
-                        <h1 class="doctor_taital">What doctors say...</h1>
-   
-                     </div>
-                     <video width="100%" height="400" controls loop autoplay muted>
+                  <div class="taital_right">
+                     <h1 class="doctor_taital">What doctors say...</h1>
+                  </div>
+                  
+                  <!-- COMPLETELY REVISED VIDEO CONTAINER FOR GUARANTEED VISIBILITY -->
+                  <div class="video-container">
+                     <!-- Direct video element without nesting -->
+                     <video width="100%" height="auto" controls playsinline webkit-playsinline muted>
                         <source src="{% static 'video/dermatologist_tips.mp4' %}" type="video/mp4">
                         Your browser does not support the video tag.
                      </video>
                   </div>
-
                </div>
             </div>
          </div>
       </div>
+      <!-- doctor section end -->
+      
+      <!-- footer section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12 text-center">
+                  <p>&copy; 2025 DermaNova. All rights reserved.</p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- footer section end -->
+      
+      <!-- jQuery and Bootstrap JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"></script>
       <script src="{% static 'js/home.js' %}"></script>
+      
+      <!-- JavaScript for carousel and video -->
+      <script>
+         // Initialize the Bootstrap carousel
+         $(document).ready(function(){
+            $('.carousel').carousel({
+               interval: 5000
+            });
+            
+            // CRITICAL FIX: Force video to be visible
+            const videoElement = document.querySelector('video');
+            if (videoElement) {
+               // Make video visible by force
+               videoElement.style.display = 'block';
+               videoElement.style.visibility = 'visible';
+               videoElement.style.opacity = '1';
+               videoElement.style.width = '100%';
+               videoElement.style.height = 'auto';
+               videoElement.style.zIndex = '9999';
+               
+               // Set attributes for better mobile compatibility
+               videoElement.setAttribute('playsinline', '');
+               videoElement.setAttribute('webkit-playsinline', '');
+               videoElement.setAttribute('controls', 'controls');
+               
+               // Force parent container to be visible
+               if (videoElement.parentNode) {
+                  videoElement.parentNode.style.display = 'block';
+                  videoElement.parentNode.style.visibility = 'visible';
+                  videoElement.parentNode.style.opacity = '1';
+                  videoElement.parentNode.style.zIndex = '9999';
+                  videoElement.parentNode.style.overflow = 'visible';
+               }
+               
+               // Ensure video doesn't get hidden by any parent
+               let parent = videoElement.parentNode;
+               while (parent && parent !== document.body) {
+                  parent.style.overflow = 'visible';
+                  parent.style.zIndex = 'auto';
+                  parent = parent.parentNode;
+               }
+               
+               // Load metadata first then try to play
+               videoElement.addEventListener('loadedmetadata', function() {
+                  console.log('Video metadata loaded');
+                  videoElement.muted = true; // Mute for autoplay
+                  
+                  // Try to play after a short delay
+                  setTimeout(function() {
+                     const playPromise = videoElement.play();
+                     
+                     if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                           console.log('Video playing automatically');
+                        }).catch(error => {
+                           console.log('Autoplay prevented:', error);
+                           // Create a big, obvious play button if autoplay fails
+                           const playButton = document.createElement('div');
+                           playButton.innerHTML = '<span style="font-size: 30px;">▶️</span>';
+                           playButton.style.position = 'absolute';
+                           playButton.style.top = '50%';
+                           playButton.style.left = '50%';
+                           playButton.style.transform = 'translate(-50%, -50%)';
+                           playButton.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                           playButton.style.color = 'white';
+                           playButton.style.width = '80px';
+                           playButton.style.height = '80px';
+                           playButton.style.borderRadius = '50%';
+                           playButton.style.display = 'flex';
+                           playButton.style.justifyContent = 'center';
+                           playButton.style.alignItems = 'center';
+                           playButton.style.cursor = 'pointer';
+                           playButton.style.zIndex = '10000';
+                           
+                           playButton.addEventListener('click', function() {
+                              videoElement.muted = false;
+                              videoElement.play();
+                              this.style.display = 'none';
+                           });
+                           
+                           videoElement.parentNode.appendChild(playButton);
+                        });
+                     }
+                  }, 1000);
+               });
+               
+               // Add visible controls for mobile users
+               videoElement.controls = true;
+               
+               // Listen for window load to ensure everything is rendered
+               window.addEventListener('load', function() {
+                  // Force video to be visible again after complete page load
+                  videoElement.style.display = 'block';
+                  videoElement.style.visibility = 'visible';
+               });
+            }
+            
+            // Fallback carousel functionality if Bootstrap carousel fails
+            if (!$.fn.carousel) {
+               const items = document.querySelectorAll('.carousel-item');
+               let currentIndex = 0;
+               
+               function showSlide(index) {
+                  items.forEach(item => item.classList.remove('active'));
+                  items[index].classList.add('active');
+               }
+               
+               function nextSlide() {
+                  currentIndex = (currentIndex + 1) % items.length;
+                  showSlide(currentIndex);
+               }
+               
+               function prevSlide() {
+                  currentIndex = (currentIndex - 1 + items.length) % items.length;
+                  showSlide(currentIndex);
+               }
+               
+               // Set up click handlers for controls
+               document.querySelector('.carousel-control-next').addEventListener('click', function(e) {
+                  e.preventDefault();
+                  nextSlide();
+               });
+               
+               document.querySelector('.carousel-control-prev').addEventListener('click', function(e) {
+                  e.preventDefault();
+                  prevSlide();
+               });
+               
+               // Auto-advance slides
+               setInterval(nextSlide, 5000);
+            }
+         });
+      </script>
    </body>
 </html>

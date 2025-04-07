@@ -6,6 +6,262 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/signup.css' %}">
     <title>DermaNova - Create Account</title>
+    <style>
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            overflow-y: auto; /* Ensure page is scrollable */
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Left Panel Styles */
+        .left-panel {
+            background-color: #1a73e8;
+            color: white;
+            padding: 2rem;
+            position: relative;
+            width: 50%;
+            overflow-y: auto; /* Make left panel scrollable */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .back-link {
+            color: white;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link svg {
+            margin-left: 0.5rem;
+        }
+        
+        .slideshow {
+            position: relative;
+            width: 100%;
+            margin-top: 1rem;
+            flex-grow: 1; /* Allow slideshow to take remaining space */
+        }
+        
+        .slide {
+            display: none;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            height: 600px;
+            margin-bottom: 1rem;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        /* Right Panel Styles */
+        .right-panel {
+            padding: 2rem;
+            flex: 1;
+            overflow-y: auto; /* Makes this panel scrollable */
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-link {
+            margin-bottom: 2rem;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .password-field {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .terms input {
+            margin-right: 0.5rem;
+        }
+        
+        .terms a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+        
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 1.5rem 0;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 40%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 40%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+            color: #666;
+        }
+        
+        .social-logins {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto; /* Allow container to expand */
+                overflow-y: auto; /* Make container scrollable */
+            }
+            
+            .left-panel {
+                width: 100%;
+                padding: 1.5rem;
+                max-height: 50vh; /* Limit height on mobile */
+            }
+            
+            .slide.active {
+                height: 300px !important; /* Reduce height on mobile */
+            }
+            
+            .logo {
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+            
+            .back-link {
+                margin-bottom: 1rem;
+                justify-content: center;
+            }
+            
+            .right-panel {
+                padding: 1.5rem;
+                max-height: none; /* Remove height limitation */
+            }
+        }
+        
+        /* Small mobile screens */
+        @media (max-width: 480px) {
+            .left-panel {
+                padding: 1rem;
+                max-height: 40vh; /* Even smaller for very small screens */
+            }
+            
+            .slide.active {
+                height: 200px !important; /* Even smaller for very small screens */
+            }
+            
+            .right-panel {
+                padding: 1rem;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="password"] {
+                padding: 0.7rem;
+            }
+            
+            button {
+                padding: 0.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,17 +275,9 @@
             </a>
             
             <div class="slideshow">
-                <div class="slide active" style="background-image: url('/static/images/slideimg1.jpg'); height: 600px; border-radius: 20px;"></div>
-                <div class="slide" style="background-image: url('/static/images/slideimg2.jpg'); height: 600px; border-radius: 20px;"></div>
-                <div class="slide" style="background-image: url('/static/images/slideimg3.jpg'); height: 600px; border-radius: 20px;"></div>
-                
-                <div class="slide-caption"></div>
-                
-                <div class="slide-indicators">
-                    <div class="indicator active" data-index="0"></div>
-                    <div class="indicator" data-index="1"></div>
-                    <div class="indicator" data-index="2"></div>
-                </div>
+                <div class="slide active" style="background-image: url('{% static 'images/slideimg1.jpg' %}');"></div>
+                <div class="slide" style="background-image: url('{% static 'images/slideimg2.jpg' %}');"></div>
+                <div class="slide" style="background-image: url('{% static 'images/slideimg3.jpg' %}');"></div>
             </div>
         </div>
         
@@ -41,24 +289,24 @@
                 <p style="color: red;">{{ error }}</p>
             {% endif %}
 
-            <form method="post">
+            <form method="post" action="" id="signup-form">
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <input type="text" name="username" placeholder="Username" required />
+                    <input type="text" name="username" id="username" placeholder="Username" required />
                 </div>
 
                 <div class="form-group">
-                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="email" name="email" id="email" placeholder="Email" required />
                 </div>
 
                 <div class="form-group">
-                    <input type="text" name="phone_no" placeholder="Phone Number" required />
+                    <input type="text" name="phone_no" id="phone_no" placeholder="Phone Number" required />
                 </div>
                 
                 <div class="form-group password-field">
-                    <input type="password" name="password1" placeholder="Enter your password" required />
-                    <span class="password-toggle">
+                    <input type="password" name="password1" id="password1" placeholder="Enter your password" required />
+                    <span class="password-toggle" id="toggle-password1">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -66,12 +314,18 @@
                     </span>
                 </div>
 
-                <div class="form-group">
-                    <input type="password" name="password2" placeholder="Confirm Password" required />
+                <div class="form-group password-field">
+                    <input type="password" name="password2" id="password2" placeholder="Confirm Password" required />
+                    <span class="password-toggle" id="toggle-password2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
                 </div>
                 
                 <div class="terms">
-                    <input type="checkbox" id="terms" required />
+                    <input type="checkbox" id="terms" name="terms" required />
                     <label for="terms">I agree to the <a href="#">Terms & Conditions</a></label>
                 </div>
                 
@@ -95,7 +349,75 @@
         </div>
     </div>
     
-    <script src="{% static 'js/signup.js' %}"></script>
+    <script>
+        // Slideshow functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[index].classList.add('active');
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            // Change slide every 5 seconds
+            setInterval(nextSlide, 5000);
+            
+            // Password toggle functionality
+            const togglePassword1 = document.getElementById('toggle-password1');
+            const togglePassword2 = document.getElementById('toggle-password2');
+            const password1 = document.getElementById('password1');
+            const password2 = document.getElementById('password2');
+            
+            if (togglePassword1) {
+                togglePassword1.addEventListener('click', function() {
+                    const type = password1.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password1.setAttribute('type', type);
+                });
+            }
+            
+            if (togglePassword2) {
+                togglePassword2.addEventListener('click', function() {
+                    const type = password2.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password2.setAttribute('type', type);
+                });
+            }
+            
+            // Form submission
+            const form = document.getElementById('signup-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Validate form here if needed
+                    // This is just a placeholder for custom validation
+                    const username = document.getElementById('username').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone_no').value;
+                    const password1 = document.getElementById('password1').value;
+                    const password2 = document.getElementById('password2').value;
+                    const terms = document.getElementById('terms').checked;
+                    
+                    // Example validation
+                    if (password1 !== password2) {
+                        e.preventDefault();
+                        alert('Passwords do not match!');
+                        return false;
+                    }
+                    
+                    if (!terms) {
+                        e.preventDefault();
+                        alert('Please agree to the Terms & Conditions');
+                        return false;
+                    }
+                    
+                    // If all validations pass, the form will submit normally
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-
