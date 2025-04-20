@@ -291,3 +291,34 @@ def get_skin_diagnosis(model_path, image_path, user_description, skin_profile):
 
     return formatted_html
 
+def generate_skin_summary(model_response):
+    """
+    Generates a short but informative summary for the result page.
+    Includes top prediction, severity, and a suggestion to seek medical advice.
+    """
+    if not model_response:
+        return "No condition detected."
+
+    title, confidence = model_response[0]
+
+    # Determine severity
+    if confidence > 0.8:
+        severity = "Severe"
+    elif confidence > 0.5:
+        severity = "Moderate"
+    else:
+        severity = "Mild"
+
+    # Basic logic for medical advice suggestion
+    attention_needed = (
+        "It is recommended to consult a dermatologist for professional advice."
+        if severity in ["Severe", "Moderate"]
+        else "Currently does not appear to require immediate medical attention."
+    )
+
+    return f"""
+<b>Likely Condition:</b> {title}<br>
+<b>Severity:</b> {severity}<br>
+<b>Medical Advice:</b> {attention_needed}
+""".strip()
+

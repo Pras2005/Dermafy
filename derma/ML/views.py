@@ -57,12 +57,22 @@ def scan_img(request):
         model = load_model(model_path)
         top5_predictions = classify_image(model, image_path)
         title,severity = top5_predictions[0]
-        html_report = generate_skin_advice(top5_predictions, user_description, quiz_response)
         
+        full_report = generate_skin_advice(top5_predictions, user_description, quiz_response)
+        summary = generate_skin_summary(top5_predictions)
+        report = Report.objects.create(user=request.user, details=full_report, image=image, title=title, severity=severity)
         
-        report = Report.objects.create(user=request.user, details=html_report, image=image,title=title,severity=severity)
+        return render(request, "result.html", {
+            "summary": summary,
+            "full_report": full_report,
+            "report": report,  # full Report object
+            "created_at": report.date,
+            "patient": request.user
+        })
+
+    
         
-        return render(request, "result.html", {"report": html_report})
+
     
     return render(request, "upload.html")
 
@@ -81,7 +91,9 @@ def report_list(request):
 
 def show_report(request,pk):
     reports = get_object_or_404(Report,user=request.user,pk=pk) 
-    return render(request,"result.html",{"report":reports.details})
+    summary = generate_skin_summary(classify_image(load_model("ML/yolo_best.pt"), reports.image.path))
+    return render(request, "result.html", {"report": summary, "created_at": reports.date, "patient": reports.user,"report_id": reports.id  }) # for download link
+
 
 def download_report(request, pk):
     report = get_object_or_404(Report, user=request.user, pk=pk)
