@@ -89,10 +89,23 @@ def report_list(request):
     reports = Report.objects.filter(user=request.user)
     return render(request,"reports.html",{"reports":reports})
 
-def show_report(request,pk):
-    reports = get_object_or_404(Report,user=request.user,pk=pk) 
-    summary = generate_skin_summary(classify_image(load_model("ML/yolo_best.pt"), reports.image.path))
-    return render(request, "result.html", {"report": summary, "created_at": reports.date, "patient": reports.user,"report_id": reports.id  }) # for download link
+# def show_report(request,pk):
+#     reports = get_object_or_404(Report,user=request.user,pk=pk) 
+#     summary = generate_skin_summary(classify_image(load_model("ML/yolo_best.pt"), reports.image.path))
+#     return render(request, "result.html", {"report": summary, "created_at": reports.date, "patient": reports.user,"report_id": reports.id  })
+
+def show_report(request, pk):
+    """ This the new show report for not overwriting the existing report - RONIN"""
+    report_obj = get_object_or_404(Report, user=request.user, pk=pk)
+    summary = generate_skin_summary(classify_image(load_model("ML/yolo_best.pt"), report_obj.image.path))
+    
+    return render(request, "result.html", {
+        "report": report_obj,  
+        "summary": summary,
+        "created_at": report_obj.date,
+        "patient": report_obj.user
+    })
+
 
 
 def download_report(request, pk):
